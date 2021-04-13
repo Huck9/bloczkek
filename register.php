@@ -1,68 +1,73 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-<head>
-    <meta charset="utf-8">
-    <title>BloczKEK</title>
 
-</head>
+<?php include('head.php'); ?>
+
 
 <body>
 
 <div>
 
-    <div>
+    <div class="content">
 
-        <form action="register.php" method="POST">
+        <?php include('header.php'); ?>
 
-            <div>
-                <h1> BloczKEK </h1>
-            </div>
+        <div class="forms">
 
-            <div class="input_div">
-                <p>Imię: <input type="text" name="name" class="css-input" id="name" placeholder="..."></p>
+            <form action="register.php" method="POST">
 
-            </div>
+                <div class="form-group">
+                    <p>Imię: <label for="name"></label><input type="text" name="name" class="form-control" id="name" placeholder="..."></p>
 
-            <div class="input_div">
-                <p>Nazwisko: <input type="text" name="surname" class="css-input" id="surname" placeholder="..."></p>
-
-            </div>
-
-            <div class="input_div">
-                <p>Login: <input type="text" name="login" class="css-input" id="login" placeholder="..."></p>
-
-            </div>
-
-            <div class="input_div">
-                <p>E-mail: <input type="text" name="e-mail" class="css-input" id="e-mail" placeholder="..."></p>
-
-            </div>
-
-            <div class="input_div">
-                <p>Hasło: <input type="password" name="password" class="css-input" id="password" placeholder="...">
-                </p>
-
-            </div>
-
-            <div class="input_div">
-                <p>Powtórz hasło: <input type="password" name="second_password" class="css-input" id="second_password"
-                                         placeholder="..."></p>
-
-            </div>
-
-            <div>
-                <div>
-                    <a href="index.php">Masz konto? Zaloguj się</a>
                 </div>
-                <div>
-                    <input type="submit" name="register" id="register" value="Zarejestruj">
-                    <p id="error"></p>
+
+                <div class="form-group">
+                    <p>Nazwisko: <label for="surname"></label><input type="text" name="surname" class="form-control" id="surname" placeholder="...">
+                    </p>
+
                 </div>
-            </div>
 
-        </form>
+                <div class="form-group">
+                    <p>Login: <label for="login"></label><input type="text" name="login" class="form-control" id="login" placeholder="..."></p>
 
+                </div>
+
+                <div class="form-group">
+                    <p>E-mail: <label for="e-mail"></label><input type="text" name="e-mail" class="form-control" id="e-mail" placeholder="..."></p>
+
+                </div>
+
+                <div class="form-group">
+                    <p>Hasło: <label for="password"></label><input type="password" name="password" class="form-control" id="password"
+                                                                   placeholder="...">
+                    </p>
+
+                </div>
+
+                <div class="form-group">
+                    <p>Powtórz hasło: <label for="second_password"></label><input type="password" name="second_password" class="form-control"
+                                                                                  id="second_password"
+                                                                                  placeholder="..."></p>
+
+                </div>
+
+                <div class="userButtons">
+                    <div class="loginArea">
+                        <input type="submit" name="register" id="register" value="Zarejestruj"
+                               class="btn btn-outline-primary">
+                    </div>
+
+                    <div class="registerArea">
+                        <a href="index.php" class="btn btn-outline-secondary">Mam już konto</a>
+                    </div>
+                </div>
+
+
+            </form>
+
+            <p id="error"></p>
+        </div>
     </div>
 
 </div>

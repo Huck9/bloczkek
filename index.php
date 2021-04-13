@@ -1,42 +1,48 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-<head>
-    <meta charset="utf-8">
-    <title>BloczKEK</title>
 
-</head>
+<?php include('head.php'); ?>
 
 <body>
 
 <div>
 
-    <div>
+
+    <div class="content">
+
+        <?php include('header.php'); ?>
 
         <form action="index.php" method="POST">
 
-            <div>
-                <h1> BloczKEK </h1>
-            </div>
 
-            <div class="input_div">
-                <p>Login: <input type="text" name="login" class="css-input" id="login" placeholder="..."></p>
+            <div class="forms">
 
-            </div>
 
-            <div class="input_div">
-                <p>Hasło: <input type="password" name="password" class="css-input" id="password" placeholder="..."></p>
+                <div class="form-group">
+                    <p>Login: <label for="login"></label><input type="text" name="login" class="form-control" id="login"
+                                                                placeholder="..."></p>
 
-            </div>
-
-            <div>
-                <div>
-                    <a href="register.php">Nie masz konta? Zarejestruj się</a>
                 </div>
-                <div>
-                    <input type="submit" name="sign" id="sign_in" value="Zaloguj">
-                    <p id="error"></p>
+
+                <div class="form-group">
+                    <p>Hasło: <label for="password"></label><input type="password" name="password" class="form-control"
+                                                                   id="password" placeholder="..."></p>
+
                 </div>
+
+                <div class="userButtons">
+                    <div class="loginArea">
+                        <input type="submit" name="sign" id="sign_in" value="Zaloguj" class="btn btn-outline-primary"
+                               title="Pamiętaj o wylogowaniu się po zakończeniu pracy!">
+                    </div>
+                    <div class="registerArea">
+                        <a href="register.php" class="btn btn-outline-secondary">Nie masz konta? Zarejestruj się</a>
+                    </div>
+                </div>
+
+
+                <div id="error"></div>
             </div>
 
         </form>
@@ -44,8 +50,9 @@
     </div>
 
 </div>
-
+<script type="text/javascript" src="scripts.js"></script>
 </body>
+
 
 </html>
 
@@ -73,7 +80,7 @@ if (isset($_POST['sign'])) {
     } else {
         ?>
         <script type="text/javascript">
-            document.getElementById("error").innerHTML = "<?php echo "Zły login lub hasło" ?>";
+            document.getElementById("error").innerHTML = "<?php echo "Zły login lub hasło, spróbuj ponownie" ?>";
         </script>
         <?php
     }

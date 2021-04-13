@@ -1,0 +1,44 @@
+body{
+    background-image: url("assets/images/dust_scratches.png");
+}
+
+.content{
+    width: 70%;
+    margin: auto;
+    padding-top: 10px;
+}
+
+
+
+.header img{
+    width: 20%;
+    height: 20%;
+
+}
+
+
+#error{
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+
+
+
+.userButtons{
+    display: flex;
+}
+
+.loginArea{
+    flex-direction: row;
+    padding-right: 20px;
+}
+
+.registerArea{
+    flex-direction: row;
+}
+
+.forms{
+    margin-top: 15px;
+}
