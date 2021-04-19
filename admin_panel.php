@@ -11,11 +11,11 @@
 
         <?php include('header.php'); ?>
 
-        <button>Wyloguj</button>
+
 
         <div>
 
-            <a href = 'register.php'><button onclick="">Dodaj pracownika</button></a>
+            <a href = 'register.php'><button onclick="" class="btn btn-outline-primary">Dodaj pracownika</button></a>
 
         </div>
 

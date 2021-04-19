@@ -11,10 +11,6 @@
 
         <?php include('header.php'); ?>
 
-        <div>
-            <button>Wyloguj</button>
-        </div>
-
         <div class="forms">
 
             <form action="register.php" method="POST">
