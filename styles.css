@@ -23,7 +23,10 @@ body{
     font-size: 15px;
 }
 
-
+#logOutButton{
+    float:right;
+    margin-top:17px;
+}
 
 
 .userButtons{
