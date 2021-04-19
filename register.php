@@ -1,9 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
 <?php include('head.php'); ?>
-
 
 <body>
 
@@ -12,6 +10,10 @@
     <div class="content">
 
         <?php include('header.php'); ?>
+
+        <div>
+            <button>Wyloguj</button>
+        </div>
 
         <div class="forms">
 
@@ -49,20 +51,14 @@
                     <p>Powtórz hasło: <label for="second_password"></label><input type="password" name="second_password" class="form-control"
                                                                                   id="second_password"
                                                                                   placeholder="..."></p>
-
                 </div>
 
                 <div class="userButtons">
                     <div class="loginArea">
-                        <input type="submit" name="register" id="register" value="Zarejestruj"
+                        <input type="submit" name="register" id="register" value="Zarejestruj nowego użytkownika"
                                class="btn btn-outline-primary">
                     </div>
-
-                    <div class="registerArea">
-                        <a href="index.php" class="btn btn-outline-secondary">Mam już konto</a>
-                    </div>
                 </div>
-
 
             </form>
 

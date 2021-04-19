@@ -1,13 +1,11 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
 <?php include('head.php'); ?>
 
 <body>
 
 <div>
-
 
     <div class="content">
 
@@ -15,20 +13,16 @@
 
         <form action="index.php" method="POST">
 
-
             <div class="forms">
-
 
                 <div class="form-group">
                     <p>Login: <label for="login"></label><input type="text" name="login" class="form-control" id="login"
                                                                 placeholder="..."></p>
-
                 </div>
 
                 <div class="form-group">
                     <p>Hasło: <label for="password"></label><input type="password" name="password" class="form-control"
                                                                    id="password" placeholder="..."></p>
-
                 </div>
 
                 <div class="userButtons">
@@ -36,11 +30,7 @@
                         <input type="submit" name="sign" id="sign_in" value="Zaloguj" class="btn btn-outline-primary"
                                title="Pamiętaj o wylogowaniu się po zakończeniu pracy!">
                     </div>
-                    <div class="registerArea">
-                        <a href="register.php" class="btn btn-outline-secondary">Nie masz konta? Zarejestruj się</a>
-                    </div>
                 </div>
-
 
                 <div id="error"></div>
             </div>
@@ -52,7 +42,6 @@
 </div>
 <script type="text/javascript" src="scripts.js"></script>
 </body>
-
 
 </html>
 
@@ -76,7 +65,18 @@ if (isset($_POST['sign'])) {
         session_start();
         $_SESSION['name'] = $login;
         $_SESSION['role'] = $role;
-        # header("location: #######");
+        if ($role == 'user'){
+            header("location: user_panel.php");
+        }
+        elseif ($role == 'pracownik')
+        {
+            header("location: worker_panel.php");
+        }
+        elseif ($role == 'ADMIN')
+        {
+            header("location: admin_panel.php");
+        }
+
     } else {
         ?>
         <script type="text/javascript">
