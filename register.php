@@ -73,6 +73,18 @@
 require_once("config.php");
 global $config;
 
+function getRandomString($length = 10): string
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $string = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $string .= $characters[mt_rand(0, strlen($characters) - 1)];
+    }
+
+    return $string;
+}
+
 $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
 if (isset($_POST['register'])) {
@@ -134,12 +146,14 @@ if (isset($_POST['register'])) {
         exit();
     }
 
-    $password = md5($password);
-    $sql = "INSERT INTO users (name, surname, login, password, email, accountType) VALUES (?,?,?,?,?,?)";
+    $salt = getRandomString(10);
+    $password=hash('sha256',$password.$salt);
+    $sql = "INSERT INTO users (name, surname, login, password, salt, email, accountType) VALUES (?,?,?,?,?,?, ?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$name, $surname, $login, $password, $email, "user"]);
+    $stmt->execute([$name, $surname, $login, $password, $salt, $email, "user"]);
     header("location: index.php");
 }
 
 ?>
+
 
