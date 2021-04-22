@@ -55,26 +55,38 @@ $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 if (isset($_POST['sign'])) {
 
     $login = $_POST['login'];
-    $password = md5($_POST['password']);
+    $password = $_POST['password'];
 
-    $stm = $pdo->query("SELECT * FROM users WHERE login='$login' AND password='$password' ");
+
+    $stm = $pdo->query("SELECT * FROM users WHERE login='$login'");
     $user = $stm->fetch();
 
+
     if ($user > 0) {
-        $role = $user['accountType'];
-        session_start();
-        $_SESSION['name'] = $login;
-        $_SESSION['role'] = $role;
-        if ($role == 'user'){
-            header("location: user_panel.php");
-        }
-        elseif ($role == 'pracownik')
-        {
-            header("location: worker_panel.php");
-        }
-        elseif ($role == 'ADMIN')
-        {
-            header("location: admin_panel.php");
+
+
+        $salt = $user['salt'];
+        $checkPass = hash('sha256', $password . $salt);
+
+
+        if ($checkPass == $user['password']) {
+            $role = $user['accountType'];
+            session_start();
+            $_SESSION['name'] = $login;
+            $_SESSION['role'] = $role;
+            if ($role == 'user') {
+                header("location: user_panel.php");
+            } elseif ($role == 'pracownik') {
+                header("location: worker_panel.php");
+            } elseif ($role == 'ADMIN') {
+                header("location: admin_panel.php");
+            }
+        } else {
+            ?>
+            <script type="text/javascript">
+                document.getElementById("error").innerHTML = "<?php echo "Zły login lub hasło, spróbuj ponownie" ?>";
+            </script>
+            <?php
         }
 
     } else {
