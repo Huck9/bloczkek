@@ -10,20 +10,11 @@
     <div class="content">
 
         <?php include('header.php'); ?>
-        
-        <div>
 
-            <a href = 'register.php'><button onclick="" class="btn btn-outline-primary">Dodaj użytkownika</button></a>
-
-        </div>
+        <a href="worker_panel.php"><button>Wróć</button></a>
 
     </div>
 
 </div>
 
 </body>
-
-
-
-<?php
-

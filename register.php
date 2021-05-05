@@ -11,6 +11,8 @@
 
         <?php include('header.php'); ?>
 
+        <a href="worker_panel.php"><button>Wróć</button></a>
+
         <div class="forms">
 
             <form action="register.php" method="POST">
@@ -150,6 +152,7 @@ if (isset($_POST['register'])) {
     $password=hash('sha256',$password.$salt);
     $sql = "INSERT INTO users (name, surname, login, password, salt, email, accountType) VALUES (?,?,?,?,?,?, ?)";
     $stmt = $pdo->prepare($sql);
+    # tutaj jeśli dodamy sesję trzeba ustawić że admin może wybrać czy dodać usera czy pracownika
     $stmt->execute([$name, $surname, $login, $password, $salt, $email, "user"]);
     header("location: index.php");
 }
