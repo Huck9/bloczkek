@@ -11,23 +11,26 @@
 
         <?php include('header.php'); ?>
 
-        <form action="index.php" method="POST">
+        <form action="login.php" method="POST">
 
             <div class="forms">
 
                 <div class="form-group">
-                    <p>Login: <label for="login"></label><input type="text" name="login" class="form-control" id="login"
+                    <p>Login: <label for="login"></label><input type="text" name="login" class="form-control"
+                                                                id="login"
                                                                 placeholder="..."></p>
                 </div>
 
                 <div class="form-group">
-                    <p>Hasło: <label for="password"></label><input type="password" name="password" class="form-control"
+                    <p>Hasło: <label for="password"></label><input type="password" name="password"
+                                                                   class="form-control"
                                                                    id="password" placeholder="..."></p>
                 </div>
 
                 <div class="userButtons">
                     <div class="loginArea">
-                        <input type="submit" name="sign" id="sign_in" value="Zaloguj" class="btn btn-outline-primary"
+                        <input type="submit" name="sign" id="sign_in" value="Zaloguj"
+                               class="btn btn-outline-primary"
                                title="Pamiętaj o wylogowaniu się po zakończeniu pracy!">
                     </div>
                 </div>
@@ -44,7 +47,6 @@
 </body>
 
 </html>
-
 <?php
 
 require_once("config.php");
@@ -76,7 +78,7 @@ if (isset($_POST['sign'])) {
             $_SESSION['role'] = $role;
             if ($role == 'user') {
                 header("location: user_panel.php");
-            } elseif ($role == 'pracownik') {
+            } elseif ($role == 'worker') {
                 header("location: worker_panel.php");
             } elseif ($role == 'ADMIN') {
                 header("location: admin_panel.php");

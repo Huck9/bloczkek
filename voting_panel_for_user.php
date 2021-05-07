@@ -1,72 +1,194 @@
-<!doctype html>
-<html class="no-js" lang="">
+<?php
+session_start();
+if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user') {
+    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
 
-<?php include('head.php'); ?>
+    require_once("config.php");
+    global $config;
 
-<body>
+    $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
-<div>
+    $stm = $pdo->prepare('SELECT * FROM users WHERE login = ?');
+    $stm->execute([$_SESSION['name']]);
+    $userID = $stm->fetch(PDO::FETCH_ASSOC);
+    $userID = $userID['userID'];
 
-    <div class="content">
+    $stm = $pdo->query("SELECT * FROM votings");
+    $votings = $stm->fetchAll();
 
-        <?php include('header.php'); ?>
+    ?>
+    <!doctype html>
+    <html class="no-js" lang="">
 
-        <a href="user_panel.php"><button>Wróć</button></a>
+    <?php include("head.php"); ?>
 
-        <div id="votings">
+    <body>
+
+    <div>
+
+        <div class="content">
+
+            <?php include("header.php"); ?>
+
+            <a href="user_panel.php">
+                <button>Wróć</button>
+            </a>
+
+            <div id="votings">
+                <?php
+                $stm = $pdo->query("SELECT * FROM votings");
+                $data = $stm->fetchAll();
+                $num = 0;
+                foreach ($data as $d) {
+                    $stm = $pdo->prepare("SELECT * FROM user_votes WHERE userID = ? AND votingID = ?");
+                    $stm->execute([$userID, $d['votingID']]);
+                    $votes = $stm->fetch(PDO::FETCH_ASSOC);
+                    ?>
+                    <div id="vote<?php echo $num ?>">
+                        <form action="" method="POST">
+                            <input id="vote" name="voting" value="<?php echo $num ?>" style="display: none">
+                            <div id="title">
+                                <p>Nazwa projektu: </p>
+                                <p><?= $d['title'] ?></p>
+                            </div>
+                            <div id="date">
+                                <p>Koniec głosowania: </p>
+                                <p><?= $d['date'] ?></p>
+                            </div>
+                            <div id="description">
+                                <p>Opis: </p>
+                                <p><?= $d['description'] ?></p>
+                            </div>
+                            <div id="buttons">
+                                <?php
+                                if ($votes == null):
+                                    ?>
+                                    <input type="submit" class="buttons" name="buttons" id="yes" value="Za">
+                                    <input type="submit" class="buttons" name="buttons" id="without_answer"
+                                           value="Wstrzymuję się">
+                                    <input type="submit" class="buttons" name="buttons" id="no" value="Przeciw">
+                                <?php
+                                else:
+                                    if ($votes['answer'] == "Za"):
+                                        ?>
+                                        <input type="submit" class="buttons" name="buttons" id="yes" value="Za"
+                                               disabled="disabled" style="color: green">
+                                    <?php
+                                    else:
+                                        ?>
+                                        <input type="submit" class="buttons" name="buttons" id="yes" value="Za"
+                                               disabled="disabled">
+                                    <?php
+                                    endif;
+                                    if ($votes['answer'] == "Wstrzymuje sie"):
+                                        ?>
+                                        <input type="submit" class="buttons" name="buttons" id="no" value="Wstrzymuje sie"
+                                               disabled="disabled" style="color: green">
+                                    <?php
+                                    else:
+                                        ?>
+                                        <input type="submit" class="buttons" name="buttons" id="no" value="Wstrzymuje sie"
+                                               disabled="disabled">
+                                    <?php
+                                    endif;
+                                    if ($votes['answer'] == "Przeciw"):
+                                        ?>
+                                        <input type="submit" class="buttons" name="change" id="change"
+                                               value="Przeciw" disabled="disabled" style="color: green">
+                                    <?php
+                                    else:
+                                        ?>
+                                        <input type="submit" class="buttons" name="change" id="change"
+                                               disabled="disabled" value="Przeciw">
+                                    <?php
+                                    endif;
+                                    ?>
+                                    <input type="submit" class="buttons" name="change" id="change"
+                                           value="Zmień decyzję">
+                                <?php endif;
+                                ?>
+                            </div>
+                        </form>
+                    </div>
+                    <?php
+                    $num++;
+                }
+                ?>
+            </div>
 
         </div>
 
     </div>
 
-</div>
+    </body>
 
-</body>
+    </html>
+    <?php
 
-</html>
+    if (isset($_POST['buttons'])) {
+        $votingID = $_POST['voting'];
+        $sql = "INSERT INTO user_votes (userID, votingID, answer) VALUES (?,?,?)";
+        $stmt = $pdo->prepare($sql);
 
-<?php
+        $votingID = (int)$votingID;
 
-require_once("config.php");
-global $config;
+        if ($_POST['buttons'] == "Za") {
+            $stmt->execute([$userID, $votings[$votingID]['votingID'], "Za"]);
+            $sql = "UPDATE votings SET yes = yes + 1 WHERE votingID = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$votings[$votingID]['votingID']]);
 
-$pdo = new PDO($config['dsn'], $config['username'], $config['password']);
+        } elseif ($_POST['buttons'] == "Wstrzymuję się") {
+            $stmt->execute([$userID, $votings[$votingID]['votingID'], "Wstrzymuje sie"]);
+            $sql = "UPDATE votings SET without_answer = without_answer + 1 WHERE votingID = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$votings[$votingID]['votingID']]);
 
-$stm = $pdo->query("SELECT * FROM votings");
-$data = $stm->fetchAll();
+        } elseif ($_POST['buttons'] == "Przeciw") {
+            $stmt->execute([$userID, $votings[$votingID]['votingID'], "Przeciw"]);
+            $sql = "UPDATE votings SET no = no + 1 WHERE votingID = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$votings[$votingID]['votingID']]);
+        }
 
-$dom = new DOMDocument();
-$dom->loadHTMLFile("voting_panel_for_user.php");
 
-foreach ($data as $d)
-{
-    $votings = $dom->getElementById("votings");
-    $vote = $dom->createElement('div');
-    $vote->setAttribute('name', 'vote');
-    $votings->appendChild($vote);
-    $title = $dom->createElement('div');
-    $title->setAttribute('name', 'title');
-    $title->nodeValue = 'Tytuł: ' . $d['title'];
-    $vote->appendChild($title);
-    $date = $dom->createElement('div');
-    $date->setAttribute('name', 'date');
-    $date->nodeValue = 'Koniec głosowania: ' . $d['date'];
-    $vote->appendChild($date);
-    $description = $dom->createElement('div', );
-    $description->setAttribute('name', 'description');
-    $description->nodeValue = 'Opis: ' . $d['description'];
-    $vote->appendChild($description);
-    $buttons = $dom->createElement('div');
-    $buttons->setAttribute('name', 'buttons');
-    $button_yes = $dom->createElement('button', 'Za');
-    $button_without_answer = $dom->createElement('button', 'Wstrzymuję się');
-    $button_no = $dom->createElement('button', 'Przeciw');
-    $buttons->appendChild($button_yes);
-    $buttons->appendChild($button_without_answer);
-    $buttons->appendChild($button_no);
-    $vote->appendChild($buttons);
+        echo "<meta http-equiv='refresh' content='0'>";
+    }
+
+    if (isset($_POST['change'])) {
+        $votingID = $_POST['voting'];
+
+        $sql = "SELECT * FROM user_votes WHERE userID = ? AND votingID = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$userID, $votings[$votingID]['votingID']]);
+        $f = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $answer = $f['answer'];
+
+        if ($f['answer'] == "Za") {
+            $sql = "UPDATE votings SET yes = yes - 1 WHERE votingID = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$votings[$votingID]['votingID']]);
+
+        } elseif ($f['answer'] == "Wstrzymuje sie") {
+            $sql = "UPDATE votings SET without_answer = without_answer - 1 WHERE votingID = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$votings[$votingID]['votingID']]);
+
+        } elseif ($f['answer'] == "Przeciw") {
+            $sql = "UPDATE votings SET no = no - 1 WHERE votingID = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$votings[$votingID]['votingID']]);
+        }
+
+        $sql = "DELETE FROM user_votes WHERE userID = ? AND votingID = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$userID, $votings[$votingID]['votingID']]);
+
+        echo "<meta http-equiv='refresh' content='0'>";
+    }
+
+} else {
+    echo "Brak dostępu";
 }
 
-echo $dom->saveHTML($votings);
-
-?>

@@ -3,15 +3,16 @@ include('head.php');
 require_once("config.php");
 global $config;
 
-session_start();
-
 $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
 $stmt = $pdo->prepare('SELECT email FROM users WHERE login = ?');
 $stmt->execute([$_SESSION['name']]);
 $update_users = $stmt->fetch(PDO::FETCH_ASSOC);
 
-?>
+session_start();
+if (isset($_SESSION) && isset($_SESSION['name'])) {
+    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
+    ?>
     <body>
 
     <div>
@@ -41,6 +42,9 @@ $update_users = $stmt->fetch(PDO::FETCH_ASSOC);
     </body>
 
 <?php
+} else {
+    echo "Brak dostępu";
+}
 
 function getRandomString($length = 10): string
 {
