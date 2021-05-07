@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION) && isset($_SESSION['name'])) {
+if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
     echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
     ?>
 <!doctype html>
@@ -38,7 +38,7 @@ if (isset($_SESSION) && isset($_SESSION['name'])) {
                 </div>
 
                 <div class="userButtons">
-                    <div class="addArea">
+                    <div>
                         <input type="submit" name="add" id="add" value="Dodaj" class="btn btn-outline-primary">
                     </div>
                 </div>

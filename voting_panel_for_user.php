@@ -20,7 +20,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user'
     <!doctype html>
     <html class="no-js" lang="">
 
-    <?php include("head.php"); ?>
+    <?php include('head.php'); ?>
 
     <body>
 
@@ -28,7 +28,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user'
 
         <div class="content">
 
-            <?php include("header.php"); ?>
+            <?php include('header.php'); ?>
 
             <a href="user_panel.php">
                 <button>Wróć</button>
@@ -61,12 +61,20 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user'
                             </div>
                             <div id="buttons">
                                 <?php
-                                if ($votes == null):
+                                if ($votes == null and strtotime($d['date']) - time() > 0):
                                     ?>
                                     <input type="submit" class="buttons" name="buttons" id="yes" value="Za">
                                     <input type="submit" class="buttons" name="buttons" id="without_answer"
                                            value="Wstrzymuję się">
                                     <input type="submit" class="buttons" name="buttons" id="no" value="Przeciw">
+                                <?php
+                                elseif (strtotime($d['date']) - time() < 0):
+                                    ?>
+                                <p style="color: red">Głosowanie dobiegło końca</p>
+                                    <p>Wyniki:</p>
+                                <p>Za: <?= $d['yes']?></p>
+                                    <p>Wstrzymało się: <?= $d['without_answer']?></p>
+                                    <p>Przeciw: <?= $d['no']?></p>
                                 <?php
                                 else:
                                     if ($votes['answer'] == "Za"):

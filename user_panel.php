@@ -20,6 +20,10 @@ if (isset($_SESSION) && isset($_SESSION['name'])) {
                 <button onclick="" class="btn btn-outline-primary">Głosowania</button>
             </a>
 
+            <a href='edit_user.php'>
+                <button onclick="" class="btn btn-outline-primary">Zmień hasło</button>
+            </a>
+
         </div>
 
     </div>
