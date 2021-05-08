@@ -209,7 +209,9 @@ if (isset($_POST['register'])) {
         $account = $_POST['account_type'];
         $stmt->execute([$name, $surname, $login, $password, $salt, $email, $account]);
     }
-    header("location: admin_panel.php");
+    ?>
+    <script> location.replace("admin_panel.php"); </script>
+    <?php
 }
 
 ?>
