@@ -1,74 +1,116 @@
-<!doctype html>
-<html class="no-js" lang="">
+<?php
+session_start();
+if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == "ADMIN" or $_SESSION['role'] == "worker") {
+    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
+    ?>
+    <!doctype html>
+    <html class="no-js" lang="">
 
-<?php include('head.php'); ?>
+    <?php include('head.php'); ?>
 
-<body>
+    <body>
 
-<div>
+    <div>
 
-    <div class="content">
+        <div class="content">
 
-        <?php include('header.php'); ?>
+            <?php include('header.php');
 
-        <div class="forms">
+            if ($_SESSION['role'] == "ADMIN"):
+            ?>
+            <a href="admin_panel.php">
+                <?php
+                elseif ($_SESSION['role'] == "worker"):
+                ?>
+                <a href="worker_panel.php">
+                    <?php
+                    endif;
+                    ?>
+                    <button>Wróć</button>
+                </a>
 
-            <form action="register.php" method="POST">
+                <div class="forms">
 
-                <div class="form-group">
-                    <p>Imię: <label for="name"></label><input type="text" name="name" class="form-control" id="name" placeholder="..."></p>
+                    <form action="register.php" method="POST">
 
+                        <div class="form-group">
+                            <p>Imię: <label for="name"></label><input type="text" name="name" class="form-control"
+                                                                      id="name"
+                                                                      placeholder="..."></p>
+
+                        </div>
+
+                        <div class="form-group">
+                            <p>Nazwisko: <label for="surname"></label><input type="text" name="surname"
+                                                                             class="form-control"
+                                                                             id="surname" placeholder="...">
+                            </p>
+
+                        </div>
+
+                        <div class="form-group">
+                            <p>Login: <label for="login"></label><input type="text" name="login" class="form-control"
+                                                                        id="login" placeholder="..."></p>
+
+                        </div>
+
+                        <div class="form-group">
+                            <p>E-mail: <label for="e-mail"></label><input type="text" name="e-mail" class="form-control"
+                                                                          id="e-mail" placeholder="..."></p>
+
+                        </div>
+
+                        <div class="form-group">
+                            <p>Hasło: <label for="password"></label><input type="password" name="password"
+                                                                           class="form-control" id="password"
+                                                                           placeholder="...">
+                            </p>
+
+                        </div>
+
+                        <div class="form-group">
+                            <p>Powtórz hasło: <label for="second_password"></label><input type="password"
+                                                                                          name="second_password"
+                                                                                          class="form-control"
+                                                                                          id="second_password"
+                                                                                          placeholder="..."></p>
+                        </div>
+
+                        <?php
+                        if ($_SESSION['role'] == "ADMIN"):
+                            ?>
+                            <input type="radio" id="user" name="account_type" value="user">
+                            <label for="user">Użytkownik</label><br>
+                            <input type="radio" id="worker" name="account_type" value="worker">
+                            <label for="worker">Pracownik</label><br>
+                        <?php
+                        endif;
+                        ?>
+
+                        <div class="userButtons">
+                            <div class="loginArea">
+                                <input type="submit" name="register" id="register"
+                                       value="Zarejestruj nowego użytkownika"
+                                       class="btn btn-outline-primary">
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <p id="error"></p>
                 </div>
-
-                <div class="form-group">
-                    <p>Nazwisko: <label for="surname"></label><input type="text" name="surname" class="form-control" id="surname" placeholder="...">
-                    </p>
-
-                </div>
-
-                <div class="form-group">
-                    <p>Login: <label for="login"></label><input type="text" name="login" class="form-control" id="login" placeholder="..."></p>
-
-                </div>
-
-                <div class="form-group">
-                    <p>E-mail: <label for="e-mail"></label><input type="text" name="e-mail" class="form-control" id="e-mail" placeholder="..."></p>
-
-                </div>
-
-                <div class="form-group">
-                    <p>Hasło: <label for="password"></label><input type="password" name="password" class="form-control" id="password"
-                                                                   placeholder="...">
-                    </p>
-
-                </div>
-
-                <div class="form-group">
-                    <p>Powtórz hasło: <label for="second_password"></label><input type="password" name="second_password" class="form-control"
-                                                                                  id="second_password"
-                                                                                  placeholder="..."></p>
-                </div>
-
-                <div class="userButtons">
-                    <div class="loginArea">
-                        <input type="submit" name="register" id="register" value="Zarejestruj nowego użytkownika"
-                               class="btn btn-outline-primary">
-                    </div>
-                </div>
-
-            </form>
-
-            <p id="error"></p>
         </div>
+
     </div>
 
-</div>
+    </body>
 
-</body>
+    </html>
 
-</html>
-
-<?php
+    <?php
+} else {
+    echo "Brak dostępu";
+}
 
 require_once("config.php");
 global $config;
@@ -97,6 +139,17 @@ if (isset($_POST['register'])) {
     $secondPassword = $_POST['second_password'];
 
     if ($name == "" or $surname == "" or $login == "" or $email == "" or $password == "" or $secondPassword == "") {
+
+        ?>
+        <script type="text/javascript">
+            document.getElementById("error").innerHTML = "<?php echo "Wypełnij wszystkie pola" ?>";
+        </script>
+        <?php
+        exit();
+
+    }
+
+    if (!isset($_POST['account_type']) and $_SESSION['role'] == "ADMIN") {
         ?>
         <script type="text/javascript">
             document.getElementById("error").innerHTML = "<?php echo "Wypełnij wszystkie pola" ?>";
@@ -147,11 +200,18 @@ if (isset($_POST['register'])) {
     }
 
     $salt = getRandomString(10);
-    $password=hash('sha256',$password.$salt);
+    $password = hash('sha256', $password . $salt);
     $sql = "INSERT INTO users (name, surname, login, password, salt, email, accountType) VALUES (?,?,?,?,?,?, ?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$name, $surname, $login, $password, $salt, $email, "user"]);
-    header("location: index.php");
+    if ($_SESSION['role'] == "worker") {
+        $stmt->execute([$name, $surname, $login, $password, $salt, $email, "user"]);
+    } elseif (($_SESSION['role'] == "ADMIN")) {
+        $account = $_POST['account_type'];
+        $stmt->execute([$name, $surname, $login, $password, $salt, $email, $account]);
+    }
+    ?>
+    <script> location.replace("admin_panel.php"); </script>
+    <?php
 }
 
 ?>
