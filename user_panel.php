@@ -1,3 +1,28 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<?php include('head.php'); ?>
+
+<body>
+
+<div>
+
+    <div class="content">
+
+        <?php include('header.php'); ?>
+
+
+        <?php include('camera_table.php'); ?>
+
+
+    </div>
+
+</div>
+
+</body>
+
+
+
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user") {
