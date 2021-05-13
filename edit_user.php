@@ -5,11 +5,12 @@ global $config;
 
 $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
+session_start();
+
 $stmt = $pdo->prepare('SELECT email FROM users WHERE login = ?');
 $stmt->execute([$_SESSION['name']]);
 $update_users = $stmt->fetch(PDO::FETCH_ASSOC);
 
-session_start();
 if (isset($_SESSION) && isset($_SESSION['name'])) {
     echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
     ?>
