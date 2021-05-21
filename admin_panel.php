@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION) && isset($_SESSION['name'])) {
+if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['name'] == "ADMIN") {
     echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
     ?>
 <!doctype html>
