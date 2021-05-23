@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION) && isset($_SESSION['name'])) {
+if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user") {
     echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
     ?>
     <!doctype html>
@@ -22,6 +22,10 @@ if (isset($_SESSION) && isset($_SESSION['name'])) {
 
             <a href='edit_user.php'>
                 <button onclick="" class="btn btn-outline-primary">Zmień hasło</button>
+            </a>
+
+            <a href='read_invoices.php'>
+                <button onclick="" class="btn btn-outline-primary">Przeglądaj opłaty</button>
             </a>
 
         </div>
