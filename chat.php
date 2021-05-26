@@ -58,8 +58,16 @@ if (isset($_SESSION) && isset($_SESSION['name']) and isset($_SESSION['role'])) {
     $req->execute(array('user_id'=>$userID, 'other_user_id'=>$person_ID, 'other_user_id2'=>$person_ID, 'user_id2'=>$userID));
     $messages = $req->fetchAll(PDO::FETCH_ASSOC);
     $msgs = "";
+    if (sizeof($messages) > 0){
+        $msg_date = $messages[0]['date'];
+        $msgs = $msgs . "<div class='chat_date'>$msg_date</div>";
+    }
     foreach ($messages as $msg){
         $txt = $msg['content'];
+        if ($msg_date != $msg['date']) {
+            $msg_date = $msg['date'];
+            $msgs = $msgs . "<div class='chat_date'>$msg_date</div>";
+        }
         if ($msg['from_user'] == $userID){
             $msgs = $msgs . "<div class='my_message'>$txt</div>";
         } else{
