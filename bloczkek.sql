@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 23 Maj 2021, 22:43
+-- Czas generowania: 31 Maj 2021, 14:11
 -- Wersja serwera: 10.4.18-MariaDB
--- Wersja PHP: 7.4.16
+-- Wersja PHP: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,15 +28,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `invoices` (
-                            `invoiceID` int(10) NOT NULL,
-                            `invoiceNumber` int(20) NOT NULL,
-                            `nettoValue` double NOT NULL,
-                            `vatValue` double NOT NULL,
-                            `bruttoValue` double NOT NULL,
-                            `filename` text NOT NULL,
-                            `date` date NOT NULL,
-                            `status` varchar(50) NOT NULL
+  `invoiceID` int(10) NOT NULL,
+  `invoiceNumber` int(20) NOT NULL,
+  `nettoValue` double NOT NULL,
+  `vatValue` double NOT NULL,
+  `bruttoValue` double NOT NULL,
+  `filename` text NOT NULL,
+  `date` date NOT NULL,
+  `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `invoices`
+--
+
+INSERT INTO `invoices` (`invoiceID`, `invoiceNumber`, `nettoValue`, `vatValue`, `bruttoValue`, `filename`, `date`, `status`) VALUES
+(3, 65264, 100, 23, 123, '', '2021-05-08', '');
 
 -- --------------------------------------------------------
 
@@ -45,14 +52,14 @@ CREATE TABLE `invoices` (
 --
 
 CREATE TABLE `users` (
-                         `userID` int(16) NOT NULL,
-                         `name` varchar(50) NOT NULL,
-                         `surname` varchar(50) NOT NULL,
-                         `login` varchar(50) NOT NULL,
-                         `email` varchar(50) NOT NULL,
-                         `password` varchar(255) NOT NULL,
-                         `salt` varchar(10) NOT NULL,
-                         `accountType` varchar(50) NOT NULL
+  `userID` int(16) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `surname` varchar(50) NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `salt` varchar(10) NOT NULL,
+  `accountType` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -71,11 +78,18 @@ INSERT INTO `users` (`userID`, `name`, `surname`, `login`, `email`, `password`, 
 --
 
 CREATE TABLE `user_votes` (
-                              `voteID` int(10) NOT NULL,
-                              `userID` int(10) NOT NULL,
-                              `votingID` int(10) NOT NULL,
-                              `answer` varchar(25) NOT NULL
+  `voteID` int(10) NOT NULL,
+  `userID` int(10) NOT NULL,
+  `votingID` int(10) NOT NULL,
+  `answer` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `user_votes`
+--
+
+INSERT INTO `user_votes` (`voteID`, `userID`, `votingID`, `answer`) VALUES
+(285, 4, 10, 'Wstrzymuje sie');
 
 -- --------------------------------------------------------
 
@@ -84,13 +98,13 @@ CREATE TABLE `user_votes` (
 --
 
 CREATE TABLE `votings` (
-                           `votingID` int(10) NOT NULL,
-                           `title` varchar(50) NOT NULL,
-                           `date` date NOT NULL,
-                           `description` text NOT NULL,
-                           `yes` int(10) NOT NULL,
-                           `no` int(10) NOT NULL,
-                           `without_answer` int(10) NOT NULL
+  `votingID` int(10) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `description` text NOT NULL,
+  `yes` int(10) NOT NULL,
+  `no` int(10) NOT NULL,
+  `without_answer` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -101,7 +115,7 @@ INSERT INTO `votings` (`votingID`, `title`, `date`, `description`, `yes`, `no`, 
 (7, 'asd', '2021-05-05', 'siema', 0, 0, 0),
 (8, 'test2', '2021-05-15', 'asdasdsd', 0, 0, 0),
 (9, 'dasddas', '2021-05-23', 'asdasdsdasd', 0, 0, 0),
-(10, 'dasdasdsfasdfdsad', '2021-05-15', 'sadasdsdasdas', 0, 0, 0);
+(10, 'dasdasdsfasdfdsad', '2022-05-24', 'sadasdsdasdas', 0, 0, 1);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -111,25 +125,25 @@ INSERT INTO `votings` (`votingID`, `title`, `date`, `description`, `yes`, `no`, 
 -- Indeksy dla tabeli `invoices`
 --
 ALTER TABLE `invoices`
-    ADD PRIMARY KEY (`invoiceID`);
+  ADD PRIMARY KEY (`invoiceID`);
 
 --
 -- Indeksy dla tabeli `users`
 --
 ALTER TABLE `users`
-    ADD PRIMARY KEY (`userID`);
+  ADD PRIMARY KEY (`userID`);
 
 --
 -- Indeksy dla tabeli `user_votes`
 --
 ALTER TABLE `user_votes`
-    ADD PRIMARY KEY (`voteID`);
+  ADD PRIMARY KEY (`voteID`);
 
 --
 -- Indeksy dla tabeli `votings`
 --
 ALTER TABLE `votings`
-    ADD PRIMARY KEY (`votingID`);
+  ADD PRIMARY KEY (`votingID`);
 
 --
 -- AUTO_INCREMENT dla zrzuconych tabel
@@ -139,25 +153,25 @@ ALTER TABLE `votings`
 -- AUTO_INCREMENT dla tabeli `invoices`
 --
 ALTER TABLE `invoices`
-    MODIFY `invoiceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `invoiceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-    MODIFY `userID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `userID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT dla tabeli `user_votes`
 --
 ALTER TABLE `user_votes`
-    MODIFY `voteID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=268;
+  MODIFY `voteID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=286;
 
 --
 -- AUTO_INCREMENT dla tabeli `votings`
 --
 ALTER TABLE `votings`
-    MODIFY `votingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `votingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
