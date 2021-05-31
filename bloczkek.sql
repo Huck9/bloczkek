@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 31 Maj 2021, 14:11
+-- Czas generowania: 31 Maj 2021, 18:00
 -- Wersja serwera: 10.4.18-MariaDB
 -- Wersja PHP: 8.0.3
 
@@ -20,6 +20,33 @@ SET time_zone = "+00:00";
 --
 -- Baza danych: `ipz`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `chat_logs`
+--
+
+CREATE TABLE `chat_logs` (
+  `log_id` int(11) NOT NULL,
+  `from_user` int(11) NOT NULL,
+  `to_user` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
+  `time` time NOT NULL,
+  `content` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `chat_logs`
+--
+
+INSERT INTO `chat_logs` (`log_id`, `from_user`, `to_user`, `date`, `time`, `content`) VALUES
+(128, 4, 5, '2021-05-22', '23:35:26', 'test message 1'),
+(129, 5, 4, '2021-05-22', '23:35:56', 'tstmsg 2'),
+(130, 5, 4, '2021-05-22', '23:36:13', 'msg3'),
+(131, 4, 5, '2021-05-22', '23:36:18', 'msg4'),
+(132, 4, 8, '2021-05-31', '17:58:56', 'siema Helenko '),
+(133, 8, 4, '2021-05-31', '17:59:47', 'cześć Stefan');
 
 -- --------------------------------------------------------
 
@@ -122,6 +149,14 @@ INSERT INTO `votings` (`votingID`, `title`, `date`, `description`, `yes`, `no`, 
 --
 
 --
+-- Indeksy dla tabeli `chat_logs`
+--
+ALTER TABLE `chat_logs`
+  ADD PRIMARY KEY (`log_id`),
+  ADD KEY `from_user` (`from_user`),
+  ADD KEY `to_user` (`to_user`);
+
+--
 -- Indeksy dla tabeli `invoices`
 --
 ALTER TABLE `invoices`
@@ -150,6 +185,12 @@ ALTER TABLE `votings`
 --
 
 --
+-- AUTO_INCREMENT dla tabeli `chat_logs`
+--
+ALTER TABLE `chat_logs`
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+
+--
 -- AUTO_INCREMENT dla tabeli `invoices`
 --
 ALTER TABLE `invoices`
@@ -172,6 +213,17 @@ ALTER TABLE `user_votes`
 --
 ALTER TABLE `votings`
   MODIFY `votingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Ograniczenia dla zrzutów tabel
+--
+
+--
+-- Ograniczenia dla tabeli `chat_logs`
+--
+ALTER TABLE `chat_logs`
+  ADD CONSTRAINT `chat_logs_ibfk_1` FOREIGN KEY (`from_user`) REFERENCES `users` (`userID`),
+  ADD CONSTRAINT `chat_logs_ibfk_2` FOREIGN KEY (`to_user`) REFERENCES `users` (`userID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
