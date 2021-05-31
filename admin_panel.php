@@ -23,6 +23,12 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "ADMIN"
 
         </div>
 
+        <div  style="margin-top: 30px">
+
+            <a href = 'chat.php'><button onclick="" class="btn btn-outline-primary">Komunikator</button></a>
+
+        </div>
+
     </div>
 
 </div>

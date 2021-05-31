@@ -32,6 +32,10 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user")
                 <button onclick="" class="btn btn-outline-primary">Przeglądaj opłaty</button>
             </a>
 
+            <a href='chat.php'>
+                <button onclick="" class="btn btn-outline-primary">Komunikator</button>
+            </a>
+
         </div>
 
     </div>

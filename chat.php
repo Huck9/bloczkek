@@ -1,13 +1,29 @@
 <?php
 session_start();
-
+if (isset($_POST['logOutButton'])) {
+    session_unset();
+    session_destroy();
+    header('location: index.php');
+}
 $people = "";
 $msgs = "";
+$back_btn = "";
 if (isset($_SESSION) && isset($_SESSION['name']) and isset($_SESSION['role'])) {
-
+    if ($_SESSION['role'] == 'user'){
+        $back_btn = "<a href='user_panel.php'>
+            <button class='btn btn-outline-secondary'>Wróć</button>
+        </a>";
+    } elseif ($_SESSION['role'] == 'worker'){
+        $back_btn = "<a href='worker_panel.php'>
+            <button class='btn btn-outline-secondary'>Wróć</button>
+        </a>";
+    } elseif ($_SESSION['role'] == 'ADMIN'){
+        $back_btn = "<a href='admin_panel.php'>
+            <button class='btn btn-outline-secondary'>Wróć</button>
+        </a>";
+    }
     require_once("config.php");
     global $config;
-
     $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
     $stm = $pdo->prepare('SELECT * FROM users WHERE login = ?');
@@ -61,6 +77,8 @@ if (isset($_SESSION) && isset($_SESSION['name']) and isset($_SESSION['role'])) {
     if (sizeof($messages) > 0){
         $msg_date = $messages[0]['date'];
         $msgs = $msgs . "<div class='chat_date'>$msg_date</div>";
+    } else{
+        $msgs = $msgs . "<div id='chat_no_msg'>Brak wiadomości</div>";
     }
     foreach ($messages as $msg){
         $txt = $msg['content'];
@@ -69,9 +87,9 @@ if (isset($_SESSION) && isset($_SESSION['name']) and isset($_SESSION['role'])) {
             $msgs = $msgs . "<div class='chat_date'>$msg_date</div>";
         }
         if ($msg['from_user'] == $userID){
-            $msgs = $msgs . "<div class='my_message'>$txt</div>";
+            $msgs = $msgs . "<div class='chat_my_message'>$txt</div>";
         } else{
-            $msgs = $msgs . "<div class='others_message'>$txt</div>";
+            $msgs = $msgs . "<div class='chat_others_message'>$txt</div>";
         }
     }
 
@@ -86,29 +104,24 @@ if (isset($_SESSION) && isset($_SESSION['name']) and isset($_SESSION['role'])) {
 <html class="no-js" lang="">
 
 <?php include('head.php'); ?>
-
 <body>
 <div>
 
     <div class="content">
 
         <?php include('header.php'); ?>
-
-        <form id="select_person" name="select_person" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <label>
-                <select name="person" onchange="form.submit();">
-                    <?php echo $people;?>
-                </select>
-            </label>
+        <?php echo $back_btn ?>
+        <form id="chat_select_person" name="select_person" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+            <select name="person" id="chat_people_list" onchange="form.submit();">
+                <?php echo $people;?>
+            </select>
 
         <div id="chat_field">
             <?php echo $msgs;?>
         </div>
 
-            <label>
-                <input type="text" size="255" id="msg_text_field" name="msg_text">
-            </label>
-            <input type="submit" name='send' value="Wyślij">
+            <textarea name="msg_text" id="chat_msg_text_field" maxlength="255" rows="3" cols="85"></textarea>
+            <input type="submit" name='send' id="chat_send" value="Wyślij">
         </form>
 
     </div>
