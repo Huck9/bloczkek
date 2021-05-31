@@ -86,8 +86,8 @@ body{
     margin: auto;
     width: 100%;
     text-align: center;
-    color: white;
-    border-bottom: 1px solid white;
+    color: black;
+    border-bottom: 1px solid black;
 }
 
 .chat_my_message, .chat_others_message{
@@ -142,4 +142,10 @@ body{
 #chat_no_msg{
     text-align: center;
     color: white;
+}
+
+.sendArea{
+    display: flex;
+    flex-direction: row;
+    height: 100px;
 }
