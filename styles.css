@@ -61,3 +61,85 @@ body{
     margin: 0 auto;
 
 }
+
+#chat_select_person {
+    width: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#chat_field{
+    width: 100%;
+    border: 2px solid #777777;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: 4px;
+    min-height: 200px;
+}
+
+.chat_date{
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    color: white;
+    border-bottom: 1px solid white;
+}
+
+.chat_my_message, .chat_others_message{
+    color: white;
+    word-wrap: break-word;
+    max-width: 70%;
+    height: auto;
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.chat_my_message{
+    background-color: #5789fb;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.chat_others_message{
+    background-color: #2f69a8;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#chat_msg_text_field{
+    width: 85%;
+    height: 100px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+#chat_send{
+    align-self: center;
+    width: 70px;
+    height: 70px;
+}
+
+#chat_people_list{
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#chat_no_msg{
+    text-align: center;
+    color: white;
+}
