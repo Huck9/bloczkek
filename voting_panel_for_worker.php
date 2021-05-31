@@ -7,7 +7,7 @@ global $config;
 $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
-    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
+    $infoUser =  "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
     ?>
     <!doctype html>
     <html class="no-js" lang="">
@@ -21,9 +21,11 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
         <div class="content">
 
             <?php include('header.php'); ?>
-
+            <div class="infoUser">
+                <?php echo $infoUser?>
+            </div>
             <a href="worker_panel.php">
-                <button>Wróć</button>
+                <button class="btn btn-outline-secondary">Wróć</button>
             </a>
 
             <?php
@@ -31,7 +33,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
             $data = $stm->fetchAll();
             ?>
 
-            <table>
+            <table class="table" id="table" style="margin-top:30px">
                 <thead>
                 <tr>
                     <th>Nazwa projektu</th>
@@ -54,7 +56,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
                 foreach ($votes as $v) {
                 if (strtotime($v['date']) - time() < 0):
                 ?>
-                <tr style="background: gray">
+                <tr style>
                     <?php
                     else:
                     ?>
@@ -62,13 +64,13 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
                     <?php
                     endif;
                     ?>
-                    <td><?= $v['title'] ?></td>
-                    <td><?= $v['date'] ?></td>
-                    <td><?= $v['description'] ?></td>
-                    <td><?= $v['yes'] ?></td>
-                    <td><?= $v['without_answer'] ?></td>
-                    <td><?= $v['no'] ?></td>
-                    <td><?= strval($v['yes'] + $v['without_answer'] + $v['no']) . '/' . sizeof($users)?></td>
+                    <th scope="col"><?= $v['title'] ?></th>
+                    <td scope="col"><?= $v['date'] ?></td>
+                    <td scope="col"><?= $v['description'] ?></td>
+                    <td scope="col"><?= $v['yes'] ?></td>
+                    <td scope="col"><?= $v['without_answer'] ?></td>
+                    <td scope="col"><?= $v['no'] ?></td>
+                    <td scope="col"><?= strval($v['yes'] + $v['without_answer'] + $v['no']) . '/' . sizeof($users)?></td>
                     <?php
                     }
                     ?>

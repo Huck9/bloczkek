@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user') {
-    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
+    $infoUser =  "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
 
     require_once("config.php");
     global $config;
@@ -29,12 +29,14 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user'
         <div class="content">
 
             <?php include('header.php'); ?>
-
+            <div class="infoUser">
+                <?php echo $infoUser?>
+            </div>
             <a href="user_panel.php">
-                <button>Wróć</button>
+                <button class="btn btn-outline-secondary">Wróć</button>
             </a>
 
-            <div id="votings">
+            <div id="votings" style="margin-top:30px">
                 <?php
                 $stm = $pdo->query("SELECT * FROM votings");
                 $data = $stm->fetchAll();
@@ -47,83 +49,85 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user'
                     <div id="vote<?php echo $num ?>">
                         <form action="" method="POST">
                             <input id="vote" name="voting" value="<?php echo $num ?>" style="display: none">
-                            <div id="title">
-                                <p>Nazwa projektu: </p>
-                                <p><?= $d['title'] ?></p>
-                            </div>
-                            <div id="date">
-                                <p>Koniec głosowania: </p>
-                                <p><?= $d['date'] ?></p>
-                            </div>
-                            <div id="description">
-                                <p>Opis: </p>
-                                <p><?= $d['description'] ?></p>
-                            </div>
+                            <div class="card" style="margin-top:30px">
+
+                                <h5 class="card-header">Temat głosowania: <?= $d['title'] ?></h5>
+
+                                <div class="card-body">
+
+
+
+                                    <h5 class="card-title">Opis: <?= $d['description'] ?></h5>
+                                    <p class="card-text">Koniec głosowania: <?= $d['date'] ?></p>
+
+
                             <div id="buttons">
                                 <?php
                                 if ($votes == null and strtotime($d['date']) - time() > 0):
                                     ?>
-                                    <input type="submit" class="buttons" name="buttons" id="yes" value="Za">
-                                    <input type="submit" class="buttons" name="buttons" id="without_answer"
+                                    <input type="submit" class="btn btn-success" name="buttons" id="yes" value="Za">
+                                    <input type="submit" class="btn btn-secondary" name="buttons" id="without_answer"
                                            value="Wstrzymuję się">
-                                    <input type="submit" class="buttons" name="buttons" id="no" value="Przeciw">
+                                    <input type="submit" class="btn btn-danger" name="buttons" id="no" value="Przeciw">
                                 <?php
                                 elseif (strtotime($d['date']) - time() < 0):
                                     ?>
-                                <p style="color: red">Głosowanie dobiegło końca</p>
-                                    <p>Wyniki:</p>
-                                <p>Za: <?= $d['yes']?></p>
-                                    <p>Wstrzymało się: <?= $d['without_answer']?></p>
-                                    <p>Przeciw: <?= $d['no']?></p>
+                                <p style="color: red;">Głosowanie dobiegło końca</p>
+                                    <div class="card-text" style="display:flex; flex-direction: row">
+                                    <p style="color: green; font-weight: bold;"> Za: <?= $d['yes']?> </p>
+                                    <p style="color: gray; font-weight: bold; margin-left: 10px""> Wstrzymało się: <?= $d['without_answer']?> </p>
+                                    <p style="color: red; font-weight: bold; margin-left: 10px""> Przeciw: <?= $d['no']?> </p>
+                                    </div>
                                 <?php
                                 else:
                                     if ($votes['answer'] == "Za"):
                                         ?>
-                                        <input type="submit" class="buttons" name="buttons" id="yes" value="Za"
-                                               disabled="disabled" style="color: green">
+                                        <input type="submit" class="btn btn-success" name="buttons" id="yes" value="Za"
+                                               disabled="disabled" style="color: white; border: 3px solid green">
                                     <?php
                                     else:
                                         ?>
-                                        <input type="submit" class="buttons" name="buttons" id="yes" value="Za"
-                                               disabled="disabled">
+                                        <input type="submit" class="btn bg-transparent" name="buttons" id="yes" value="Za"
+                                               disabled="disabled" style="">
                                     <?php
                                     endif;
                                     if ($votes['answer'] == "Wstrzymuje sie"):
                                         ?>
-                                        <input type="submit" class="buttons" name="buttons" id="no" value="Wstrzymuje sie"
-                                               disabled="disabled" style="color: green">
+                                        <input type="submit" class="btn btn-secondary" name="buttons" id="no" value="Wstrzymuje sie"
+                                               disabled="disabled" style="color: white; border: 3px solid black">
                                     <?php
                                     else:
                                         ?>
-                                        <input type="submit" class="buttons" name="buttons" id="no" value="Wstrzymuje sie"
+                                        <input type="submit" class="btn bg-transparent" name="buttons" id="no" value="Wstrzymuje sie"
                                                disabled="disabled">
                                     <?php
                                     endif;
                                     if ($votes['answer'] == "Przeciw"):
                                         ?>
-                                        <input type="submit" class="buttons" name="change" id="change"
-                                               value="Przeciw" disabled="disabled" style="color: green">
+                                        <input type="submit" class="btn btn-danger" name="change" id="change"
+                                               value="Przeciw" disabled="disabled" style="color: white; border: 3px solid red">
                                     <?php
                                     else:
                                         ?>
-                                        <input type="submit" class="buttons" name="change" id="change"
+                                        <input type="submit" class="btn bg-transparent" name="change" id="change"
                                                disabled="disabled" value="Przeciw">
                                     <?php
                                     endif;
                                     ?>
-                                    <input type="submit" class="buttons" name="change" id="change"
+                                    <input type="submit" style="margin-left: 20px" class="btn btn-outline-info" name="change" id="change"
                                            value="Zmień decyzję">
                                 <?php endif;
                                 ?>
                             </div>
                         </form>
                     </div>
+            </div>
                     <?php
                     $num++;
                 }
                 ?>
             </div>
-
+    </div>
         </div>
 
     </div>
