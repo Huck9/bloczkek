@@ -1,8 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
-    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
-    ?>
+    $infoUser =  "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";    ?>
 <!doctype html>
 <html class="no-js" lang="">
 
@@ -15,8 +14,11 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
     <div class="content">
 
         <?php include('header.php'); ?>
+        <div class="infoUser">
+            <?php echo $infoUser?>
+        </div>
 
-        <a href="worker_panel.php"><button>Wróć</button></a>
+        <a href="worker_panel.php"><button class="btn btn-outline-secondary">Wróć</button></a>
 
         <form action="add_vote.php" method="POST">
 

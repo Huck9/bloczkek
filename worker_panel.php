@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
-    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
+    $infoUser =  "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
     ?>
     <!doctype html>
     <html class="no-js" lang="">
@@ -15,8 +15,11 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
         <div class="content">
 
             <?php include('header.php'); ?>
+            <div class="infoUser">
+                <?php echo $infoUser?>
+            </div>
 
-            <div>
+            <div style="margin-top: 30px">
 
                 <a href='register.php'>
                     <button onclick="" class="btn btn-outline-primary">Dodaj mieszkańca</button>
