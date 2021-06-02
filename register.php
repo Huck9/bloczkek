@@ -43,34 +43,34 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == "ADMIN
                         <div class="form-group">
                             <p>Imię: <label for="name"></label><input type="text" name="name" class="form-control"
                                                                       id="name"
-                                                                      placeholder="..."></p>
+                                                                      placeholder="..." required></p>
 
                         </div>
 
                         <div class="form-group">
                             <p>Nazwisko: <label for="surname"></label><input type="text" name="surname"
                                                                              class="form-control"
-                                                                             id="surname" placeholder="...">
+                                                                             id="surname" placeholder="..." required>
                             </p>
 
                         </div>
 
                         <div class="form-group">
                             <p>Login: <label for="login"></label><input type="text" name="login" class="form-control"
-                                                                        id="login" placeholder="..."></p>
+                                                                        id="login" placeholder="..." required></p>
 
                         </div>
 
                         <div class="form-group">
                             <p>E-mail: <label for="e-mail"></label><input type="text" name="e-mail" class="form-control"
-                                                                          id="e-mail" placeholder="..."></p>
+                                                                          id="e-mail" placeholder="..." required></p>
 
                         </div>
 
                         <div class="form-group">
                             <p>Hasło: <label for="password"></label><input type="password" name="password"
                                                                            class="form-control" id="password"
-                                                                           placeholder="...">
+                                                                           placeholder="..." required>
                             </p>
 
                         </div>
@@ -80,7 +80,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == "ADMIN
                                                                                           name="second_password"
                                                                                           class="form-control"
                                                                                           id="second_password"
-                                                                                          placeholder="..."></p>
+                                                                                          placeholder="..." required></p>
                         </div>
 
                         <?php

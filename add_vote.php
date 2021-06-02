@@ -26,17 +26,17 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
 
                 <div class="form-group">
                     <p>Nazwa: <label for="title"></label><input type="text" name="title" class="form-control" id="title"
-                                                                placeholder="..."></p>
+                                                                placeholder="..." required></p>
                 </div>
 
                 <div class="form-group">
                     <p>Termin zakończenia: <label for="date"></label><input type="date" name="date" class="form-control"
-                                                                            id="date" placeholder="..."></p>
+                                                                            id="date" placeholder="..." required></p>
                 </div>
 
                 <div class="form-group">
                     <p>Opis: <label for="description"></label><input type="text" name="description" class="form-control"
-                                                                     id="description" placeholder="..."></p>
+                                                                     id="description" placeholder="..." required></p>
                 </div>
 
                 <div class="userButtons">
