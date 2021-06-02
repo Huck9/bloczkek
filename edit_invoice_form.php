@@ -17,7 +17,16 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
     <html class="no-js" lang="">
 
     <?php include('head.php'); ?>
-
+    <script>
+        $(document).ready(function() {
+            $('#vatValue, #nettoValue').change(function() {
+                let totalValue = 0
+                totalValue += parseFloat(parseFloat($('#nettoValue').val()) + parseFloat($('#vatValue').val()));
+                totalValue = totalValue.toFixed(2)
+                $('#bruttoValue').val(totalValue);
+            });
+        });
+    </script>
 <body>
 
 
@@ -37,16 +46,16 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
             <div class="form-group"><label>Numer Faktury:</label> <input type="text" name="invoiceNumber"
                                                                          value="<?= $invoice['invoiceNumber'] ?>"
                                                                          class="form-control" required></div>
-            <div class="form-group"><label>Wartość netto:</label> <input type="number" step="0.01" name="nettoValue"
+            <div class="form-group"><label>Wartość netto:</label> <input type="number" id="nettoValue" step="0.01" name="nettoValue"
                                                                          value="<?= $invoice['nettoValue'] ?>"
                                                                          class="form-control" required></div>
-            <div class="form-group"><label>Wartość VAT: </label><input type="number" step="0.01" name="vatValue"
+            <div class="form-group"><label>Wartość VAT: </label><input type="number" id="vatValue" step="0.01" name="vatValue"
                                                                        value="<?= $invoice['vatValue'] ?>"
                                                                        class="form-control" required></div>
-            <div class="form-group"><label>Watrosc brutto: </label><input type="number" step="0.01"
+            <div class="form-group"><label>Watrosc brutto: </label><input type="number" id="bruttoValue" step="0.01"
                                                                           name="bruttoValue"
                                                                           value="<?= $invoice['bruttoValue'] ?>"
-                                                                          class="form-control" required></div>
+                                                                          class="form-control" required readonly></div>
             <div class="form-group"><label>Data faktury: </label><input type="date" name="date"
                                                                         value="<?= $invoice['date'] ?>"
                                                                         class="form-control" required></div>
