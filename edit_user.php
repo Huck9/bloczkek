@@ -33,18 +33,18 @@ if (isset($_SESSION) && isset($_SESSION['name'])) {
             <form action="edit_user.php" method="POST">
                 <div class="form-group">
                     <p>E-mail: <label></label><input type="text" name="e-mail" id="e-mail" class="form-control"
-                                                     value="<?= $update_users['email'] ?>"></p>
+                                                     value="<?= $update_users['email'] ?>" required></p>
                 </div>
 
                 <div class="form-group">
                     <p>Nowe hasło: <label></label><input type="password" name="password" id="password"
-                                                         class="form-control" placeholder="..."></p>
+                                                         class="form-control" placeholder="..." required></p>
                 </div>
 
                 <div class="form-group">
                     <p>Powtórz nowe hasło: <label></label><input type="password" name="second_password"
                                                                  id="second_password" class="form-control"
-                                                                 placeholder="..."></p>
+                                                                 placeholder="..." required></p>
                 </div>
 
                 <div>

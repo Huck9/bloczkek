@@ -6,7 +6,7 @@ $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
-    echo "Current user: {$_SESSION['name']}, session id: " . session_id() . ", role: {$_SESSION['role']} ";
+    $infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
 
     $stmt = $pdo->prepare('SELECT * FROM invoices WHERE invoiceID = ?');
     $stmt->execute([$_GET['id']]);
@@ -25,24 +25,34 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
 
     <?php include('header.php'); ?>
 
+    <div class="infoUser">
+        <?php echo $infoUser ?>
+    </div>
     <a href="read_invoices.php">
-        <button>Wróć</button>
+        <button class="btn btn-outline-secondary">Wróć</button>
     </a>
 
     <form method="POST" action="edit_invoice.php?id=<?= $_GET['id'] ?>" enctype="multipart/form-data">
         <div class="inputs">
-            Numer Faktury: <input type="text" name="invoiceNumber" value="<?= $invoice['invoiceNumber'] ?>"
-                                  class="standardInput"><br>
-            Wartość netto: <input type="number" step="0.01" name="nettoValue"
-                                  value="<?= $invoice['nettoValue'] ?>" class="standardInput"><br>
-            Wartość VAT: <input type="number" step="0.01" name="vatValue" value="<?= $invoice['vatValue'] ?>"
-                                class="standardInput"><br>
-            Watrosc brutto: <input type="number" step="0.01" name="bruttoValue"
-                                   value="<?= $invoice['bruttoValue'] ?>" class="standardInput"><br>
-            Data faktury: <input type="date" name="date" value="<?= $invoice['date'] ?>"
-                                 class="standardInput"><br>
-            Zmiana pliku: <input type="file" id="file" name="file" size="50"><br>
-            <input type="submit" name="submit" class="submitInput">
+            <div class="form-group"><label>Numer Faktury:</label> <input type="text" name="invoiceNumber"
+                                                                         value="<?= $invoice['invoiceNumber'] ?>"
+                                                                         class="form-control" required></div>
+            <div class="form-group"><label>Wartość netto:</label> <input type="number" step="0.01" name="nettoValue"
+                                                                         value="<?= $invoice['nettoValue'] ?>"
+                                                                         class="form-control" required></div>
+            <div class="form-group"><label>Wartość VAT: </label><input type="number" step="0.01" name="vatValue"
+                                                                       value="<?= $invoice['vatValue'] ?>"
+                                                                       class="form-control" required></div>
+            <div class="form-group"><label>Watrosc brutto: </label><input type="number" step="0.01"
+                                                                          name="bruttoValue"
+                                                                          value="<?= $invoice['bruttoValue'] ?>"
+                                                                          class="form-control" required></div>
+            <div class="form-group"><label>Data faktury: </label><input type="date" name="date"
+                                                                        value="<?= $invoice['date'] ?>"
+                                                                        class="form-control" required></div>
+            <div class="form-group"><label>Zmiana pliku:</label> <input type="file" id="file" class="form-control-file"
+                                                                        name="file" size="50"></div>
+            <div class="form-group"><input type="submit" name="submit" class="btn btn-outline-primary">
         </div>
     </form>
 

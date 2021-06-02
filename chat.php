@@ -132,7 +132,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) and isset($_SESSION['role'])) {
 
 
             <div class="input-group mb-3" style="margin-top: 20px">
-                <input type="text" class="form-control" name="msg_text" placeholder="Wprowadź treść wiadomości..." aria-label="Wprowadź treść wiadomości..." aria-describedby="basic-addon2">
+                <input type="text" class="form-control" name="msg_text" placeholder="Wprowadź treść wiadomości..." aria-label="Wprowadź treść wiadomości..." aria-describedby="basic-addon2" required>
                 <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="submit" name='send' value="Wyślij">Wyślij wiadomość</button>
                 </div>

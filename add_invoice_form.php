@@ -7,7 +7,16 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
     <html class="no-js" lang="">
 
     <?php include('head.php'); ?>
-
+    <script>
+        $(document).ready(function() {
+            $('#vatValue, #nettoValue').change(function() {
+                let totalValue = 0
+                totalValue += parseFloat(parseFloat($('#nettoValue').val()) + parseFloat($('#vatValue').val()));
+                totalValue = totalValue.toFixed(2)
+                $('#bruttoValue').val(totalValue);
+            });
+        });
+    </script>
     <body>
 
     <div>
@@ -28,15 +37,15 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
         <div class="inputs">
 
             <div class="form-group"><label>Numer Faktury:</label> <input type="text" required name="invoiceNumber" class="form-control"></div>
-            <div class="form-group"><label>Wartość netto:</label> <input type="number" required step="0.01" name="nettoValue"
+            <div class="form-group"><label for="nettoValue">Wartość netto:</label> <input type="number" id="nettoValue" required step="0.01" name="nettoValue"
                                                                          class="form-control"></div>
-            <div class="form-group"><label>Wartość VAT:</label> <input type="number" required step="0.01" name="vatValue" class="form-control">
+            <div class="form-group"><label for="vatValue">Wartość VAT:</label> <input type="number" required step="0.01" id="vatValue" name="vatValue" class="form-control">
             </div>
-            <div class="form-group"><label>Watrosc brutto:</label> <input type="number" required step="0.01" name="bruttoValue"
+            <div class="form-group"><label for = "bruttoValue">Watrosc brutto:</label> <input type="number" id="bruttoValue" required readonly  step="0.01" name="bruttoValue"
                                                                           class="form-control"></div>
             <div class="form-group"><label>Data faktury:</label> <input type="date" required name="date" class="form-control"></div>
             <div class="form-group"><label>Dodaj plik</label>
-            <input type="file"  class="form-control-file" name="file" size="50"><br>
+            <input type="file"  class="form-control-file" name="file" size="50" required><br>
 
             </div>
             <input type="submit" class="btn btn-secondary">
