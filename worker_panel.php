@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
-    $infoUser =  "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
+    $infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
     ?>
     <!doctype html>
     <html class="no-js" lang="">
@@ -16,7 +16,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
 
             <?php include('header.php'); ?>
             <div class="infoUser">
-                <?php echo $infoUser?>
+                <?php echo $infoUser ?>
             </div>
 
             <div style="margin-top: 30px">
@@ -43,6 +43,14 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
 
                 <a href='chat.php'>
                     <button onclick="" class="btn btn-outline-primary">Komunikator</button>
+                </a>
+
+                <a href='notification_form.php'>
+                    <button onclick="" class="btn btn-outline-primary">Dodaj ogłoszenie</button>
+                </a>
+
+                <a href='notification_show.php'>
+                    <button onclick="" class="btn btn-outline-primary">Przeglądaj ogłoszenia</button>
                 </a>
 
             </div>

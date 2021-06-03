@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 31 Maj 2021, 18:00
--- Wersja serwera: 10.4.18-MariaDB
--- Wersja PHP: 8.0.3
+-- Generation Time: Jun 03, 2021 at 10:20 PM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `ipz`
+-- Database: `ipz`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `chat_logs`
+-- Table structure for table `chat_logs`
 --
 
 CREATE TABLE `chat_logs` (
@@ -37,7 +37,7 @@ CREATE TABLE `chat_logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `chat_logs`
+-- Dumping data for table `chat_logs`
 --
 
 INSERT INTO `chat_logs` (`log_id`, `from_user`, `to_user`, `date`, `time`, `content`) VALUES
@@ -51,7 +51,7 @@ INSERT INTO `chat_logs` (`log_id`, `from_user`, `to_user`, `date`, `time`, `cont
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `invoices`
+-- Table structure for table `invoices`
 --
 
 CREATE TABLE `invoices` (
@@ -66,7 +66,7 @@ CREATE TABLE `invoices` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `invoices`
+-- Dumping data for table `invoices`
 --
 
 INSERT INTO `invoices` (`invoiceID`, `invoiceNumber`, `nettoValue`, `vatValue`, `bruttoValue`, `filename`, `date`, `status`) VALUES
@@ -75,7 +75,28 @@ INSERT INTO `invoices` (`invoiceID`, `invoiceNumber`, `nettoValue`, `vatValue`, 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `users`
+-- Table structure for table `notification`
+--
+
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL,
+  `title` text COLLATE utf8_polish_ci NOT NULL,
+  `text` text COLLATE utf8_polish_ci NOT NULL,
+  `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Dumping data for table `notification`
+--
+
+INSERT INTO `notification` (`id`, `title`, `text`, `date`) VALUES
+(4, 'Testowe', 'testowe ogłoszenie ', '2021-06-02'),
+(5, 'Testowe2', 'testowe które nie jest opublikowane', '2021-06-24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -90,7 +111,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`userID`, `name`, `surname`, `login`, `email`, `password`, `salt`, `accountType`) VALUES
@@ -101,7 +122,7 @@ INSERT INTO `users` (`userID`, `name`, `surname`, `login`, `email`, `password`, 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `user_votes`
+-- Table structure for table `user_votes`
 --
 
 CREATE TABLE `user_votes` (
@@ -112,7 +133,7 @@ CREATE TABLE `user_votes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `user_votes`
+-- Dumping data for table `user_votes`
 --
 
 INSERT INTO `user_votes` (`voteID`, `userID`, `votingID`, `answer`) VALUES
@@ -121,7 +142,7 @@ INSERT INTO `user_votes` (`voteID`, `userID`, `votingID`, `answer`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `votings`
+-- Table structure for table `votings`
 --
 
 CREATE TABLE `votings` (
@@ -135,7 +156,7 @@ CREATE TABLE `votings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `votings`
+-- Dumping data for table `votings`
 --
 
 INSERT INTO `votings` (`votingID`, `title`, `date`, `description`, `yes`, `no`, `without_answer`) VALUES
@@ -145,11 +166,11 @@ INSERT INTO `votings` (`votingID`, `title`, `date`, `description`, `yes`, `no`, 
 (10, 'dasdasdsfasdfdsad', '2022-05-24', 'sadasdsdasdas', 0, 0, 1);
 
 --
--- Indeksy dla zrzutów tabel
+-- Indexes for dumped tables
 --
 
 --
--- Indeksy dla tabeli `chat_logs`
+-- Indexes for table `chat_logs`
 --
 ALTER TABLE `chat_logs`
   ADD PRIMARY KEY (`log_id`),
@@ -157,69 +178,81 @@ ALTER TABLE `chat_logs`
   ADD KEY `to_user` (`to_user`);
 
 --
--- Indeksy dla tabeli `invoices`
+-- Indexes for table `invoices`
 --
 ALTER TABLE `invoices`
   ADD PRIMARY KEY (`invoiceID`);
 
 --
--- Indeksy dla tabeli `users`
+-- Indexes for table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userID`);
 
 --
--- Indeksy dla tabeli `user_votes`
+-- Indexes for table `user_votes`
 --
 ALTER TABLE `user_votes`
   ADD PRIMARY KEY (`voteID`);
 
 --
--- Indeksy dla tabeli `votings`
+-- Indexes for table `votings`
 --
 ALTER TABLE `votings`
   ADD PRIMARY KEY (`votingID`);
 
 --
--- AUTO_INCREMENT dla zrzuconych tabel
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT dla tabeli `chat_logs`
+-- AUTO_INCREMENT for table `chat_logs`
 --
 ALTER TABLE `chat_logs`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
--- AUTO_INCREMENT dla tabeli `invoices`
+-- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
   MODIFY `invoiceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT dla tabeli `users`
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `userID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT dla tabeli `user_votes`
+-- AUTO_INCREMENT for table `user_votes`
 --
 ALTER TABLE `user_votes`
   MODIFY `voteID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=286;
 
 --
--- AUTO_INCREMENT dla tabeli `votings`
+-- AUTO_INCREMENT for table `votings`
 --
 ALTER TABLE `votings`
   MODIFY `votingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- Ograniczenia dla zrzutów tabel
+-- Constraints for dumped tables
 --
 
 --
--- Ograniczenia dla tabeli `chat_logs`
+-- Constraints for table `chat_logs`
 --
 ALTER TABLE `chat_logs`
   ADD CONSTRAINT `chat_logs_ibfk_1` FOREIGN KEY (`from_user`) REFERENCES `users` (`userID`),
