@@ -43,6 +43,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
                     <th>Wstrzymało się</th>
                     <th>Przeciw</th>
                     <th>Ilość głosów</th>
+                    <th>Opcja</th>
                 </tr>
                 </thead>
                 <?php
@@ -71,6 +72,15 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
                     <td scope="col"><?= $v['without_answer'] ?></td>
                     <td scope="col"><?= $v['no'] ?></td>
                     <td scope="col"><?= strval($v['yes'] + $v['without_answer'] + $v['no']) . '/' . sizeof($users)?></td>
+                    <?php if ($_SESSION['role'] == "worker") : ?>
+                        <td class="actions">
+                            <a href="voting_edit_form.php?id=<?= $v['votingID'] ?>" class="edit"><i
+                                        class='fas fa-edit' style='font-size:24px'></i></a>
+
+                            <a href="vote_delete.php?id=<?= $v['votingID'] ?>" class="delete"><i
+                                        class='fas fa-trash-alt' style='font-size:24px'></i></a>
+                        </td>
+                    <?php endif; ?>
                     <?php
                     }
                     ?>
