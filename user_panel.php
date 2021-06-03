@@ -1,12 +1,11 @@
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user") {
-    $infoUser =  "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
+    $infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
     ?>
     <!doctype html>
     <?php include('head.php'); ?>
     <html class="no-js" lang="">
-
 
 
     <body>
@@ -17,7 +16,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user")
 
             <?php include('header.php'); ?>
             <div class="infoUser">
-            <?php echo $infoUser?>
+                <?php echo $infoUser ?>
             </div>
 
             <a href='voting_panel_for_user.php'>
@@ -37,6 +36,27 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user")
             </a>
 
         </div>
+        <?php
+        require_once("config.php");
+        global $config;
+
+        $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
+
+
+        $stmt = $pdo->query("SELECT * FROM `notification` where date < CURDATE() ");
+        $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($notifications > 0) {
+            foreach ($notifications as $notification) {
+                echo $notification['title'];
+                echo " ";
+                echo $notification['text'];
+                echo " ";
+                echo $notification['date'];
+                echo " ";
+                echo "<br>";
+            }
+        }
+        ?>
 
     </div>
 
