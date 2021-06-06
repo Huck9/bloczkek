@@ -36,13 +36,16 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
         <div class="inputs">
             <div class="form-group"><label>Tytył ogłoszenia:</label> <input type="text" name="title"
                                                                          value="<?= $notification['title'] ?>"
-                                                                         class="form-control" required></div>
-            <div class="form-group"><label>Treść ogłoszenia:</label> <input type="text" id="text" step="0.01" name="text"
+                                                                         class="form-control" required minlength="5"></div>
+            <div class="form-group"><label>Treść ogłoszenia:</label> <input type="text" id="text" name="text"
                                                                          value="<?= $notification['text'] ?>"
-                                                                         class="form-control" required></div>
+                                                                         class="form-control" required
+                                                                            minlength="10"></div>
             <div class="form-group"><label>Data publikacji: </label><input type="date" id="date" step="0.01" name="date"
                                                                        value="<?= $notification['date'] ?>"
-                                                                       class="form-control" required></div>
+                                                                       class="form-control" required min=<?php
+                echo date('Y-m-d');
+                ?> ></div>
             <div class="form-group"><input type="submit" name="submit" class="btn btn-outline-primary">
             </div>
     </form>

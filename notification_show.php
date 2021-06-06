@@ -9,7 +9,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
 
     $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
-    $stmt = $pdo->query("SELECT * FROM notification ");
+    $stmt = $pdo->query("SELECT * FROM notification order by date asc");
     $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
@@ -56,6 +56,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
                         <thead>
                         <tr class="category">
 
+
                             <th scope="col">Tytuł ogłoszenia</th>
                             <th scope="col">Treść ogłoszenia</th>
                             <th scope="col">Data opublikowania</th>
@@ -70,7 +71,28 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
                             <tr class="type">
                                 <td><?=  $notification['title'] ?></td>
                                 <td><?= $notification['text'] ?></td>
-                                <td><?=  $notification['date'] ?></td>
+                                <td  style="display: flex; flex-direction: row;"><?=  $notification['date'] ?>
+                                <div style="font-style: italic; margin-left: 10px">
+                                <?php
+
+                                    $now = time(); // or your date as well
+                                    $your_date = strtotime($notification['date']);
+                                    $datediff = $now - $your_date;
+                                    $countDiff = round($datediff / (60 * 60 * 24));
+                                    $toPrint = match (true) {
+                                        intval($countDiff) >= 0  => ' (Opublikowano)',
+                                        intval($countDiff) == -1 => ' (za ' .abs($countDiff) . ' dzień)',
+                                        intval($countDiff) < -1 and intval($countDiff) > -31 => ' (za ' .abs($countDiff). ' dni)',
+                                    default => ' (w odległej przyszłości)',
+                                };
+                                    echo $toPrint
+
+
+
+                                ?>
+                                </div>
+
+                                </td>
 
 
                                 <?php if ($_SESSION['role'] == "worker") : ?>
