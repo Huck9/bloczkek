@@ -13,7 +13,7 @@
 
         <div class="forms">
 
-            <form action="add_camera.php" method="POST">
+            <form action="add_building.php" method="POST">
 
                 <div class="form-group">
                     <p>Nazwa budynku: <label for="buildingName"></label><input type="text" name="buildingName" class="form-control" id="buildingName" placeholder="..."></p>
@@ -46,7 +46,7 @@ global $config;
 
 $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
-if (isset($_POST['addCamera'])) {
+if (isset($_POST['addBuilding'])) {
 
     $buildingName = $_POST['buildingName'];
 
@@ -77,7 +77,7 @@ if (isset($_POST['addCamera'])) {
     }
 
 
-    $sql = "INSERT INTO buidlings (name) VALUES (?)";
+    $sql = "INSERT INTO buildings (name) VALUES (?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$buildingName]);
     header("location: index.php");
