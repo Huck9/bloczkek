@@ -1,7 +1,14 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-<?php include('head.php'); ?>
+<?php
+include('head.php');
+
+session_start();
+if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
+$infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
+
+?>
 <body>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
@@ -12,9 +19,14 @@
 
         <?php include('header.php'); ?>
 
+        <div class="infoUser">
+            <?php echo $infoUser ?>
+        </div>
+
         <a href="worker_panel.php">
             <button class="btn btn-outline-secondary">Wróć</button>
         </a>
+
         <form action="" method="POST">
 
             <div class="forms">
@@ -65,7 +77,7 @@
 
 require_once("config.php");
 global $config;
-session_start();
+
 $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 if (isset($_POST['title'])) {
     if (isset($_SESSION['name']) && ($_SESSION['role'] == "ADMIN" || $_SESSION['role'] == "worker")) {
@@ -79,4 +91,8 @@ if (isset($_POST['title'])) {
 
 
     }
+}
+
+} else {
+    echo "No session started.";
 }

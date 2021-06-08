@@ -79,8 +79,14 @@ if (isset($_POST['add'])) {
     else{
         $sql = "INSERT INTO votings (title, date, description, yes, no, without_answer) VALUES (?,?,?,?,?,?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$title, $date, $description, 0, 0, 0]);
-        header("location: worker_panel.php");
+        $done = $stmt->execute([$title, $date, $description, 0, 0, 0]);
+        if ($done)
+        {
+            echo "Dodano głosowanie";
+        }
+        else{
+            echo "Nie udało się dodać głosowania";
+        }
     }
 }
 ?>
