@@ -32,6 +32,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
                 <a href='voting_panel_for_worker.php'>
                     <button onclick="" class="btn btn-outline-primary">Przeglądaj głosowania</button>
                 </a>
+
                 <a href = 'add_camera.php'>
                     <button onclick="" class="btn btn-outline-primary">Dodaj kamerę</button>
                 </a>
@@ -39,9 +40,6 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
                 <a href = 'add_building.php'>
                     <button onclick="" class="btn btn-outline-primary">Dodaj budynek</button>
                 </a>
-
-            </div>
-            <div>
 
                 <a href='add_invoice_form.php'>
                     <button onclick="" class="btn btn-outline-primary">Dodaj fakturę</button>
@@ -61,6 +59,10 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
 
                 <a href='notification_show.php'>
                     <button onclick="" class="btn btn-outline-primary">Przeglądaj ogłoszenia</button>
+                </a>
+
+                <a href='faults_show.php'>
+                    <button onclick="" class="btn btn-outline-primary">Przeglądaj usterki</button>
                 </a>
 
             </div>

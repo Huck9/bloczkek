@@ -90,6 +90,25 @@ INSERT INTO `invoices` (`invoiceID`, `invoiceNumber`, `nettoValue`, `vatValue`, 
 (3, 65264, 100, 23, 123, '', '2021-05-08', '');
 
 --
+-- Table structure for table `faults`
+--
+
+CREATE TABLE `faults` (
+                            `faultID` int(10) NOT NULL,
+                            `userID` int(20) NOT NULL,
+                            `description` VARCHAR(300) NOT NULL,
+                            `status` int(1) NOT NULL,
+                            `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `faults`
+--
+
+INSERT INTO `faults` (`faultID`, `userID`, `description`, `status`, `date`) VALUES
+(1, 7, 'Kamera nie działa w godzinach 8-10', 0, '2021-06-02');
+
+--
 -- Struktura tabeli dla tabeli `cameras`
 --
 
@@ -132,7 +151,7 @@ INSERT INTO `notification` (`id`, `title`, `text`, `date`) VALUES
 --
 
 CREATE TABLE `users` (
-                         `ID` int(16) NOT NULL,
+                         `userID` int(16) NOT NULL,
                          `name` varchar(50) NOT NULL,
                          `surname` varchar(50) NOT NULL,
                          `login` varchar(50) NOT NULL,
@@ -147,10 +166,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `name`, `surname`, `login`, `email`, `password`, `salt`, `accountType`, `building_id`) VALUES
+INSERT INTO `users` (`userID`, `name`, `surname`, `login`, `email`, `password`, `salt`, `accountType`, `building_id`) VALUES
 (4, 'Stefan', 'Kobza', 'stefankobza', 'stefan@kobza.pl', '18612578641ae34bc4a20a233b1467f31154701205449a2fe760961067540197', 'WFQ6mA4Oxx', 'user', 1),
 (5, 'Kamil', 'Wons', 'kwons@123', 'kwons@wp.pl', '3fa4b7e8be77d099250754892fa10208fa7b99d47694c203774ee0d2fb1cc882', 'HHtQhQJRG5', 'ADMIN', 0),
-(6, 'Trol', 'Trolooo', 'pracownik', 'pracownik@zut.edu.pl', 'b633ac963d2d6c55835792880baa23a8cda62de30f77f669084d8d47fccedb92', 'IuQKCC3Br0', 'pracownik', 0),
+(6, 'Trol', 'Trolooo', 'pracownik', 'pracownik@zut.edu.pl', 'b633ac963d2d6c55835792880baa23a8cda62de30f77f669084d8d47fccedb92', 'IuQKCC3Br0', 'worker', 0),
 (7, 'Jan', 'Kowal', 'kowal', 'kowal@wp.pl', 'ca4e0c298de64f8e7833d5f70c0b36c5b2c8fb2a016c74563e38fac8696e103d', 'bcnMf4YXFK', 'user', 1);
 
 -- --------------------------------------------------------
@@ -218,6 +237,12 @@ ALTER TABLE `invoices`
   ADD PRIMARY KEY (`invoiceID`);
 
 --
+-- Indexes for table `faults`
+--
+ALTER TABLE `faults`
+    ADD PRIMARY KEY (`faultID`);
+
+--
 -- Indexes for table `notification`
 --
 ALTER TABLE `notification`
@@ -267,6 +292,12 @@ ALTER TABLE `invoices`
   MODIFY `invoiceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `faults`
+--
+ALTER TABLE `faults`
+    MODIFY `faultID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
@@ -276,7 +307,7 @@ ALTER TABLE `notification`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `userID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `user_votes`

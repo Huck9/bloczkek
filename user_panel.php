@@ -2,27 +2,6 @@
 <html class="no-js" lang="">
 
 <?php include('head.php'); ?>
-
-<body>
-
-<div>
-
-    <div class="content">
-
-        <?php include('header.php'); ?>
-
-
-        <?php include('camera_table.php'); ?>
-
-
-    </div>
-
-</div>
-
-</body>
-
-
-
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user") {
@@ -60,6 +39,17 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user")
                 <button onclick="" class="btn btn-outline-primary">Komunikator</button>
             </a>
 
+            <a href='camera_table.php'>
+                <button onclick="" class="btn btn-outline-primary">Kamery</button>
+            </a>
+
+            <a href='fault_form.php'>
+                <button onclick="" class="btn btn-outline-primary">Zgłoś usterkę</button>
+            </a>
+
+            <a href='faults_show.php'>
+                <button onclick="" class="btn btn-outline-primary">Przeglądaj usterki</button>
+            </a>
 
             <?php
             require_once("config.php");
