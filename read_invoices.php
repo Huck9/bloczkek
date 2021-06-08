@@ -10,12 +10,25 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
     $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
     $brutto = 0;
-    $stmt = $pdo->query("SELECT * FROM invoices ");
+    if ($_SESSION['role'] == "user") {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE login = ?");
+        $stmt->execute([$_SESSION['name']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userID = $user['userID'];
+
+        $stmt = $pdo->prepare("SELECT * FROM invoices WHERE userID = ?");
+        $stmt->execute([$userID]);
+    }
+    elseif ($_SESSION['role'] == "worker") {
+        $stmt = $pdo->query("SELECT * FROM invoices");
+    }
     $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $cnt = 0;
     foreach ($invoices as $invoice):
         $cnt++;
-        $brutto += $invoice['bruttoValue'];
+        if ($invoice['status'] == "nie zapłacone") {
+            $brutto += $invoice['bruttoValue'];
+        }
     endforeach;
 
     $limit = 25;
@@ -37,6 +50,10 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
             $stmt = $pdo->prepare("SELECT * FROM invoices WHERE invoiceNumber LIKE ? ORDER BY date LIMIT $offset, $limit");
         } elseif ($option == 'date') {
             $stmt = $pdo->prepare("SELECT * FROM invoices WHERE date=? ORDER BY date LIMIT $offset, $limit");
+        }
+        elseif ($option == 'userID')
+        {
+            $stmt = $pdo->prepare("SELECT * FROM invoices WHERE userID=? ORDER BY date LIMIT $offset, $limit");
         }
 
         $stmt->execute([$search]);
@@ -85,12 +102,13 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
 
                 <form action="#">
                     <div class="form-group" style="margin-top: 30px">
-                    <input type="text" class="form-control" id="search" name="search" placeholder="Podaj numer faktury">
+                    <input type="text" class="form-control" id="search" name="search" placeholder="...">
                     </div>
                     <div class="form-group">
                     <select name="option" id="search_select" class="form-control">
                         <option value="invoiceNumber">Numer faktury</option>
                         <option value="date">Data</option>
+                        <option value="userID">Numer użytkownika</option>
                     </select>
                     </div>
                     <button class="btn btn-outline-primary">Szukaj</button>
@@ -103,6 +121,9 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
                         <tr class="category">
 
                             <th scope="col">Numer faktury</th>
+                            <?php if ($_SESSION['role'] == "worker") : ?>
+                                <th scope="col">Użytkownik</th>
+                            <?php endif; ?>
                             <th scope="col">Wartość netto</th>
                             <th scope="col">Wartość VAT</th>
                             <th scope="col">Wartość brutto</th>
@@ -119,6 +140,13 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
                         <?php foreach ($invoices as $invoice): ?>
                             <tr class="type">
                                 <td><?= $invoice['invoiceNumber'] ?></td>
+                                <?php if ($_SESSION['role'] == "worker") :
+                                    $stmt = $pdo->prepare("SELECT * FROM users WHERE userID = ?");
+                                    $stmt->execute([$invoice['userID']]);
+                                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    ?>
+                                    <td><?= $invoice['userID'] ?>, <?= $user['name'] ?> <?= $user['surname'] ?></td>
+                                <?php endif; ?>
                                 <td><?= $invoice['nettoValue'] ?></td>
                                 <td><?= $invoice['vatValue'] ?></td>
                                 <td><?= $invoice['bruttoValue'] ?></td>
@@ -162,7 +190,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
                         <a href="read_invoices.php?page=<?= $i - 1 ?>"><?= $i ?></a>
                         <?php
                     }
-                    if (!$isSearch) {
+                    if (!$isSearch && $_SESSION['role'] == "user") {
                         ?>
 
                         <p>Ogółem do zapłaty: <?= $brutto ?></p>
