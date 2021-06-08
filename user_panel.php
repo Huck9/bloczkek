@@ -1,3 +1,7 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<?php include('head.php'); ?>
 <?php
 session_start();
 if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user") {
@@ -35,30 +39,58 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user")
                 <button onclick="" class="btn btn-outline-primary">Komunikator</button>
             </a>
 
-        </div>
-        <?php
-        require_once("config.php");
-        global $config;
+            <a href='camera_table.php'>
+                <button onclick="" class="btn btn-outline-primary">Kamery</button>
+            </a>
 
-        $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
+            <a href='fault_form.php'>
+                <button onclick="" class="btn btn-outline-primary">Zgłoś usterkę</button>
+            </a>
+
+            <a href='faults_show.php'>
+                <button onclick="" class="btn btn-outline-primary">Przeglądaj usterki</button>
+            </a>
+
+            <?php
+            require_once("config.php");
+            global $config;
+
+            $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
 
-        $stmt = $pdo->query("SELECT * FROM `notification` where date < CURDATE() ");
-        $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($notifications > 0) {
-            foreach ($notifications as $notification) {
-                echo $notification['title'];
-                echo " ";
-                echo $notification['text'];
-                echo " ";
-                echo $notification['date'];
-                echo " ";
-                echo "<br>";
+            $stmt = $pdo->query("SELECT * FROM `notification` where date <= CURDATE() order by date desc");
+            $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($notifications > 0) {
+                foreach ($notifications as $notification) {
+                    $nTitle = $notification['title'];
+                    $nText = $notification['text'];
+                    $nDate = $notification['date'];
+                    $nID = $notification['id'];
+
+                    echo "<div class='newsContainer'>";
+        echo "<div class='news'>";
+            echo "<h2> Ogłoszenie #$nID</h2>";
+            echo "<div class='card mb-3'>";
+                echo "<div class='card-body'>";
+                    echo "<h5 class='card-title'>$nTitle</h5>";
+                    echo "<p class='card-text'>$nText</p>";
+                    echo "<p class='card-text'><small class='text-muted'>$nDate</small></p>";
+                echo "</div>";
+            echo "</div>";
+        echo "</div>";
+        echo "</div>";
+
+                }
+
             }
-        }
-        ?>
 
-    </div>
+            ?>
+
+        </div>
+
+
+        </div>
+
 
     </body>
 

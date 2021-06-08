@@ -11,6 +11,8 @@ $infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id
 ?>
 <body>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 <div>
 
     <div class="content">
@@ -31,16 +33,22 @@ $infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id
 
                 <div class="form-group">
                     <p>Tytuł: <label for="login"></label><input type="text" name="title" class="form-control" id="title"
-                                                                placeholder="Tytuł ogłoszenia"></p>
+                                                                placeholder="Tytuł ogłoszenia" required minlength="5">
+                    </p>
                 </div>
 
                 <div class="form-group">
                     <p>Treść: <label for="password"></label><input type="text" name="text" class="form-control"
-                                                                   id="text" placeholder="Treść ogłoszenia"></p>
+                                                                   id="text" placeholder="Treść ogłoszenia" required
+                                                                   minlength="10"></p>
                 </div>
                 <div class="form-group">
                     <p>Data ogłoszenia: <input type="date" name="date" class="form-control"
-                                               id="date"></p>
+                                               id="date" value=<?php
+                        echo date('Y-m-d');
+                        ?> required min=<?php
+                        echo date('Y-m-d');
+                        ?>></p>
                 </div>
 
 
@@ -60,7 +68,7 @@ $infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id
     </div>
 
 </div>
-<script type="text/javascript" src="scripts.js"></script>
+
 </body>
 
 
@@ -79,7 +87,9 @@ if (isset($_POST['title'])) {
         $sql = "INSERT INTO notification (title, text, date) VALUES (?,?,?)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$title, $text, $date]);
-        echo "<div> Dodano! </div>";
+        echo "<script type='text/javascript'>toastr.success('Dodano ogłoszenie')</script>";
+
+
     }
 }
 

@@ -9,13 +9,13 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
 
     $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
-    $stmt = $pdo->query("SELECT * FROM notification order by date asc");
-    $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query("SELECT * FROM faults order by faultID asc");
+    $faults = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-?>
- <!doctype html>
+    ?>
+    <!doctype html>
     <html class="no-js" lang="">
 
     <?php include('head.php'); ?>
@@ -57,9 +57,10 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
                         <tr class="category">
 
 
-                            <th scope="col">Tytuł ogłoszenia</th>
-                            <th scope="col">Treść ogłoszenia</th>
+                            <th scope="col">Id usterki</th>
+                            <th scope="col">Opis usterki</th>
                             <th scope="col">Data opublikowania</th>
+                            <th scope="col">Status</th>
 
                             <?php if ($_SESSION['role'] == "worker") : ?>
                                 <th scope="col">Opcja</th>
@@ -67,40 +68,30 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "user" 
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($notifications as $notification) : ?>
+                        <?php foreach ($faults as $fault) : ?>
+                            <?php
+                            if($fault['status'] == 0)
+                                $status = 'Zgłoszono';
+                            elseif ($fault['status'] == 1)
+                                $status = 'Przyjęto do realizacji';
+                            elseif ($fault['status'] == 2)
+                                $status = 'W trakcie naprawy';
+                            elseif ($fault['status'] == 3)
+                                $status = 'Naprawiono';
+                            elseif ($fault['status'] == 9)
+                                $status = 'Odrzucono'; ?>
                             <tr class="type">
-                                <td><?=  $notification['title'] ?></td>
-                                <td><?= $notification['text'] ?></td>
-                                <td  style="display: flex; flex-direction: row;"><?=  $notification['date'] ?>
-                                <div style="font-style: italic; margin-left: 10px">
-                                <?php
-
-                                    $now = time(); // or your date as well
-                                    $your_date = strtotime($notification['date']);
-                                    $datediff = $now - $your_date;
-                                    $countDiff = round($datediff / (60 * 60 * 24));
-                                    $toPrint = match (true) {
-                                        intval($countDiff) >= 0  => ' (Opublikowano)',
-                                        intval($countDiff) == -1 => ' (za ' .abs($countDiff) . ' dzień)',
-                                        intval($countDiff) < -1 and intval($countDiff) > -31 => ' (za ' .abs($countDiff). ' dni)',
-                                    default => ' (w odległej przyszłości)',
-                                };
-                                    echo $toPrint
-
-
-
-                                ?>
-                                </div>
-
-                                </td>
-
+                                <td><?=  $fault['faultID'] ?></td>
+                                <td><?= $fault['description'] ?></td>
+                                <td  style="display: flex; flex-direction: row;"><?=  $fault['date'] ?></td>
+                                <td ><?=  $status ?></td>
 
                                 <?php if ($_SESSION['role'] == "worker") : ?>
                                     <td class="actions">
-                                        <a href="notification_edit_form.php?id=<?= $notification['id'] ?>" class="edit"><i
+                                        <a href="faults_edit_form.php?id=<?= $fault['faultID'] ?>" class="edit"><i
                                                 class='fas fa-edit' style='font-size:24px'></i></a>
 
-                                        <a href="notification_delete.php?id=<?= $notification['id'] ?>" class="delete"><i
+                                        <a href="fault_delete.php?id=<?= $fault['faultID'] ?>" class="delete"><i
                                                 class='fas fa-trash-alt' style='font-size:24px'></i></a>
                                     </td>
                                 <?php endif; ?>

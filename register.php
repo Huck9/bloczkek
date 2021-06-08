@@ -83,6 +83,11 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == "ADMIN
                                                                                           placeholder="..." required></p>
                         </div>
 
+                        <div class="form-group">
+                            <p>Budynek: <label for="building"></label><input type="text" name="building" class="form-control"
+                                                                                  id="building"
+                                                                                  placeholder="..."></p>
+                        </div>
                         <?php
                         if ($_SESSION['role'] == "ADMIN"):
                             ?>
@@ -144,9 +149,9 @@ if (isset($_POST['register'])) {
     $email = $_POST['e-mail'];
     $password = $_POST['password'];
     $secondPassword = $_POST['second_password'];
+    $building = $_POST['building'];
 
-    if ($name == "" or $surname == "" or $login == "" or $email == "" or $password == "" or $secondPassword == "") {
-
+    if ($name == "" or $surname == "" or $login == "" or $email == "" or $password == "" or $secondPassword == "" or $building =="") {
         ?>
         <script type="text/javascript">
             document.getElementById("error").innerHTML = "<?php echo "Wypełnij wszystkie pola" ?>";
@@ -167,6 +172,8 @@ if (isset($_POST['register'])) {
 
     $stm = $pdo->query("SELECT * FROM users");
     $users = $stm->fetchAll();
+    $stm2 = $pdo->query("SELECT * FROM buildings");
+    $buildings= $stm2->fetchAll();
 
     foreach ($users as $u) {
         if ($login == strval($u['login'])) {
@@ -177,6 +184,22 @@ if (isset($_POST['register'])) {
             <?php
             exit();
         }
+    }
+    $buildingExist = false;
+    $buildingId=0;
+    foreach ($buildings as $b) {
+        if ($building == strval($b['name'])) {
+            $buildingExist = true;
+            $buildingId=$b['id'];
+        }
+    }
+    if($buildingExist == false){
+        ?>
+        <script type="text/javascript">
+            document.getElementById("error").innerHTML = "<?php echo "Nie ma takiego budynku" ?>";
+        </script>
+        <?php
+        exit();
     }
 
     if (strlen($password) < 8) {
@@ -208,13 +231,13 @@ if (isset($_POST['register'])) {
 
     $salt = getRandomString(10);
     $password = hash('sha256', $password . $salt);
-    $sql = "INSERT INTO users (name, surname, login, password, salt, email, accountType) VALUES (?,?,?,?,?,?, ?)";
+    $sql = "INSERT INTO users (name, surname, login, password, salt, email, accountType,building_id) VALUES (?,?,?,?,?,?,?, ?)";
     $stmt = $pdo->prepare($sql);
     if ($_SESSION['role'] == "worker") {
-        $stmt->execute([$name, $surname, $login, $password, $salt, $email, "user"]);
+        $stmt->execute([$name, $surname, $login, $password, $salt, $email, "user",$buildingId]);
     } elseif (($_SESSION['role'] == "ADMIN")) {
         $account = $_POST['account_type'];
-        $stmt->execute([$name, $surname, $login, $password, $salt, $email, $account]);
+        $stmt->execute([$name, $surname, $login, $password, $salt, $email, $account,$buildingId]);
     }
     ?>
     <script> location.replace("admin_panel.php"); </script>
