@@ -87,6 +87,20 @@ if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker
             </form>
 
         </div>
+
+        <?php
+        if (isset($_SESSION['done']) && $_SESSION['done'] == True)
+        {
+            echo "Faktura dodana poprawnie";
+            $_SESSION['done'] = null;
+        }
+        elseif (isset($_SESSION['done']) && $_SESSION['done'] == False)
+        {
+            echo "Błąd w dodawaniu faktury";
+            $_SESSION['done'] = null;
+        }
+        ?>
+
     </div>
     </body>
 

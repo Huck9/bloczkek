@@ -1,7 +1,14 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-<?php include('head.php'); ?>
+<?php
+include('head.php');
+
+session_start();
+if (isset($_SESSION) && isset($_SESSION['name']) && $_SESSION['role'] == "worker") {
+$infoUser = "Aktualnie zalogowany: {$_SESSION['name']}, ID sesji: " . session_id() . ", rola: {$_SESSION['role']} ";
+
+?>
 <body>
 
 <div>
@@ -9,6 +16,14 @@
     <div class="content">
 
         <?php include('header.php'); ?>
+
+        <div class="infoUser">
+            <?php echo $infoUser ?>
+        </div>
+
+        <a href="worker_panel.php">
+            <button class="btn btn-outline-secondary">Wróć</button>
+        </a>
 
         <form action="" method="POST">
 
@@ -54,7 +69,7 @@
 
 require_once("config.php");
 global $config;
-session_start();
+
 $pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 if (isset($_POST['title'])) {
     if (isset($_SESSION['name']) && ($_SESSION['role'] == "ADMIN" || $_SESSION['role'] == "worker")) {
@@ -66,4 +81,8 @@ if (isset($_POST['title'])) {
         $stmt->execute([$title, $text, $date]);
         echo "<div> Dodano! </div>";
     }
+}
+
+} else {
+    echo "No session started.";
 }

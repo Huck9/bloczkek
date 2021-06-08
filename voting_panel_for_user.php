@@ -42,6 +42,8 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user'
                 $data = $stm->fetchAll();
                 $num = 0;
                 foreach ($data as $d) {
+                    if (strtotime($d['date']) - time() > -2592000)
+                    {
                     $stm = $pdo->prepare("SELECT * FROM user_votes WHERE userID = ? AND votingID = ?");
                     $stm->execute([$userID, $d['votingID']]);
                     $votes = $stm->fetch(PDO::FETCH_ASSOC);
@@ -117,6 +119,7 @@ if (isset($_SESSION) && isset($_SESSION['name']) and $_SESSION['role'] == 'user'
                                     <input type="submit" style="margin-left: 20px" class="btn btn-outline-info" name="change" id="change"
                                            value="Zmień decyzję">
                                 <?php endif;
+                                }
                                 ?>
                             </div>
                         </form>
